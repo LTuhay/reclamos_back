@@ -8,7 +8,6 @@ public class TpoApiApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(TpoApiApplication.class, args);
-		System.out.println("hola");
 	}
 
 }
