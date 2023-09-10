@@ -1,8 +1,3 @@
-# Read Me First
-The following was discovered as part of building this project:
-
-* The original package name 'grupo.01.tpo_api.app' is invalid and this project uses 'grupo1.tpo_api.app' instead.
-
 # Getting Started
 
 ### Reference Documentation
@@ -18,7 +13,6 @@ For further reference, please consider the following sections:
 ### Guides
 The following guides illustrate how to use some features concretely:
 
-* [Accessing data with MySQL](https://spring.io/guides/gs/accessing-data-mysql/)
 * [Accessing Data with JPA](https://spring.io/guides/gs/accessing-data-jpa/)
 * [Building a RESTful Web Service](https://spring.io/guides/gs/rest-service/)
 * [Serving Web Content with Spring MVC](https://spring.io/guides/gs/serving-web-content/)
