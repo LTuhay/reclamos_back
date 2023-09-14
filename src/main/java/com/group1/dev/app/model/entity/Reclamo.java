@@ -28,8 +28,7 @@ public class Reclamo {
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
-	//@OneToMany(mappedBy="reclamo", cascade = CascadeType.ALL)
-	//private List<String> actualizaciones = new ArrayList<String>();
+	private String actualizacion;
 	
 	@OneToMany(mappedBy="reclamo", cascade = CascadeType.ALL)
 	private List<Imagen> fotos = new ArrayList<Imagen>();
@@ -40,15 +39,6 @@ public class Reclamo {
 	
 	public Reclamo() {
 
-	}
-
-	public Reclamo(String titulo, Usuario usuario, String descripcion, EstadoReclamo estadoReclamo,
-			TipoReclamo tipoReclamo) {
-		this.titulo = titulo;
-		this.usuario = usuario;
-		this.descripcion = descripcion;
-		this.estadoReclamo = estadoReclamo;
-		this.tipoReclamo = tipoReclamo;
 	}
 
 	public int getId() {
@@ -99,14 +89,13 @@ public class Reclamo {
 		this.tipoReclamo = tipoReclamo;
 	}
 
-	/*
-	 * public List<String> getActualizaciones() { return actualizaciones; }
-	 */
+	public String getActualizacion() {
+		return actualizacion;
+	}
 
-	/*
-	 * public void setActualizaciones(List<String> actualizaciones) {
-	 * this.actualizaciones = actualizaciones; }
-	 */
+	public void setActualizacion(String actualizacion) {
+		this.actualizacion = actualizacion;
+	}
 
 	public List<Imagen> getFotos() {
 		return fotos;
@@ -127,7 +116,8 @@ public class Reclamo {
 	@Override
 	public String toString() {
 		return "Reclamo [id=" + id + ", titulo=" + titulo + ", usuario=" + usuario + ", descripcion=" + descripcion
-				+ ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", fotos=" + fotos + ", edificio=" + edificio + "]";
+				+ ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", actualizacion="
+				+ actualizacion + ", fotos=" + fotos + ", edificio=" + edificio + "]";
 	}
 
 }

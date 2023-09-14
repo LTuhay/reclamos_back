@@ -1,6 +1,7 @@
 package com.group1.dev.app.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.group1.dev.app.model.entity.Persona;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUnidadService;
 
@@ -23,7 +23,6 @@ public class UnidadController {
 
 	@Autowired
 	private IUnidadService unidadService;
-	private PersonaController personaController;
 	
 	@GetMapping("/all")
 	public List<Unidad> findAll(){
@@ -33,14 +32,14 @@ public class UnidadController {
 	
 	@GetMapping(value = "/find")
 	public ResponseEntity<?> getUnidad(@RequestParam("id") int unidadId) {
-
-		Unidad unidad = unidadService.findById(unidadId);
-		if (unidad == null) {
+		
+		Optional<Unidad> unidad = unidadService.findById(unidadId);
+		if (!unidad.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(unidad, HttpStatus.OK);
+		return new ResponseEntity<>(unidad.get(), HttpStatus.OK);
 
 	}
 
@@ -54,8 +53,8 @@ public class UnidadController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteUnidad(@RequestParam("id") int unidadId) {
 
-		Unidad unidad = unidadService.findById(unidadId);
-		if (unidad == null) {
+		Optional<Unidad> unidad = unidadService.findById(unidadId);
+		if (!unidad.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
@@ -64,22 +63,6 @@ public class UnidadController {
 		String mensaje = "Unidad eliminada con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 		
-	}
-	
-	@PostMapping(value = "/addBuyer")
-	public ResponseEntity<?> addPersonaAUnidad(@RequestParam("id") int personaId, @RequestParam("unidad") int unidadId) {
-
-		Persona persona = (Persona) personaController.getPersona(personaId).getBody();
-		if (persona == null) {
-			String mensaje = "Persona no encontrada con ID: " + personaId;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-		}
-		
-		unidadService.setPersona(unidadId, persona);
-		String mensaje = "Persona agregada con exito";
-		return new ResponseEntity<>(mensaje, HttpStatus.OK);
-
-	}
-	
+	}	
 	
 }

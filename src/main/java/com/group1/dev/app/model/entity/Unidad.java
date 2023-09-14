@@ -36,12 +36,6 @@ public class Unidad {
 		
 	}
 
-	public Unidad(int nro, int piso, EstadoUnidad estado) {
-		this.nro = nro;
-		this.piso = piso;
-		this.estado = estado;
-	}
-
 	public int getId() {
 		return id;
 	}

@@ -30,10 +30,6 @@ public class Edificio {
 
 	}
 
-	public Edificio(String direccion) {
-		this.direccion = direccion;
-	}
-
 	public int getId() {
 		return id;
 	}

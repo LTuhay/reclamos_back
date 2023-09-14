@@ -16,21 +16,7 @@ public class Usuario extends Persona {
 	
 	public Usuario() {
 		super();
-		// TODO Auto-generated constructor stub
 	}
-
-	public Usuario(String nombre, String apellido, int dni, TipoPersona tipoPersona) {
-		super(nombre, apellido, dni, tipoPersona);
-		// TODO Auto-generated constructor stub
-	}
-
-	public Usuario(String nombreUsuario, String password) {
-		super();
-		this.nombreUsuario = nombreUsuario;
-		this.password = password;
-	}
-
-
 
 	public String getNombreUsuario() {
 		return nombreUsuario;

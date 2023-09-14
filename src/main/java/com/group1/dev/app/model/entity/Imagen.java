@@ -27,12 +27,6 @@ public class Imagen {
 
 	}
 
-	public Imagen(String nombreImagen, String url, String descripcion) {
-		this.nombreImagen = nombreImagen;
-		this.url = url;
-		this.descripcion = descripcion;
-	}
-
 	public int getId() {
 		return id;
 	}

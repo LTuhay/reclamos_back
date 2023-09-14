@@ -31,14 +31,6 @@ public class Persona {
 
 	}
 
-	public Persona(String nombre, String apellido, int dni, TipoPersona tipoPersona) {
-		this.nombre = nombre;
-		this.apellido = apellido;
-		this.dni = dni;
-		this.tipoPersona = tipoPersona;
-	}
-
-
 	public int getId() {
 		return id;
 	}

@@ -1,6 +1,7 @@
 package com.group1.dev.app.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,13 @@ public class PersonaController {
 	@GetMapping(value = "/find")
 	public ResponseEntity<?> getPersona(@RequestParam("id") int personaId) {
 
-		Persona persona = personaService.findById(personaId);
-		if (persona == null) {
+		Optional<Persona> persona = personaService.findById(personaId);
+		if (!persona.isPresent()) {
 			String mensaje = "Persona no encontrada con ID: " + personaId;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<>(persona, HttpStatus.OK);
+		return new ResponseEntity<Persona>(persona.get(), HttpStatus.OK);
 
 	}
 
@@ -51,8 +52,8 @@ public class PersonaController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deletePersona(@RequestParam("id") int personaId) {
 
-		Persona persona = personaService.findById(personaId);
-		if (persona == null) {
+		Optional<Persona> persona = personaService.findById(personaId);
+		if (!persona.isPresent()) {
 			String mensaje = "Persona no encontrada con ID: " + personaId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
@@ -60,9 +61,6 @@ public class PersonaController {
 		personaService.deleteById(personaId);
 		String mensaje = "Persona eliminada con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
-
 	}
 	
-	
-
 }
