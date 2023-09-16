@@ -3,8 +3,10 @@ package com.group1.dev.app.services;
 import java.util.List;
 import java.util.Optional;
 
-import com.group1.dev.app.model.entity.Usuario;
+import org.springframework.stereotype.Service;
 
+import com.group1.dev.app.model.entity.Usuario;
+@Service
 public interface IUsuarioService {
 	
 	public List<Usuario> findAll();

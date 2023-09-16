@@ -4,10 +4,11 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.UsuarioRepository;
 import com.group1.dev.app.model.entity.Usuario;
-
+@Service
 public class UsuarioService implements IUsuarioService {
 	
 	@Autowired
