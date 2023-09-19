@@ -7,10 +7,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.group1.dev.app.model.dao.EdificioRepository;
+import com.group1.dev.app.model.dao.ImagenRepository;
 import com.group1.dev.app.model.dao.PersonaRepository;
 import com.group1.dev.app.model.dao.UnidadRepository;
 import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.EstadoUnidad;
+import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.model.entity.Unidad;
 
 @DataJpaTest
@@ -25,7 +27,8 @@ class DemoApplicationTests {
 	@Autowired
 	private EdificioRepository edificioRepo;
 	//private ReclamoRepository reclamoRepo;
-	//private ImagenRepository imagenRepo;
+	@Autowired
+	private ImagenRepository imagenRepo;
 	//private UsuarioRepository usuarioRepo;
 
 
@@ -65,9 +68,18 @@ class DemoApplicationTests {
 	@Test
 	public void should_find_Reclamo_by_id() {
 	}
-
+*/
 	@Test
 	public void should_delete_Imagen_by_id() {
+		Imagen imagen = new Imagen();
+		imagen.setDescripcion("Zoom");
+		imagen.setNombreImagen("ReclamoXZoom");
+		imagen.setId(1);
+		imagenRepo.save(imagen);
+		assertThat(imagenRepo.findById(1)).isPresent();
+		imagenRepo.deleteById(1);
+		assertThat(imagenRepo.findById(1)).isEmpty();
+		
 	}
-*/
+
 }
