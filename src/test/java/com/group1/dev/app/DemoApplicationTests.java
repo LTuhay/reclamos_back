@@ -9,10 +9,13 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.group1.dev.app.model.dao.EdificioRepository;
 import com.group1.dev.app.model.dao.ImagenRepository;
 import com.group1.dev.app.model.dao.PersonaRepository;
+import com.group1.dev.app.model.dao.ReclamoRepository;
 import com.group1.dev.app.model.dao.UnidadRepository;
 import com.group1.dev.app.model.entity.Edificio;
+import com.group1.dev.app.model.entity.EstadoReclamo;
 import com.group1.dev.app.model.entity.EstadoUnidad;
 import com.group1.dev.app.model.entity.Imagen;
+import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.Unidad;
 
 @DataJpaTest
@@ -26,7 +29,10 @@ class DemoApplicationTests {
 	
 	@Autowired
 	private EdificioRepository edificioRepo;
-	//private ReclamoRepository reclamoRepo;
+	
+	@Autowired
+	private ReclamoRepository reclamoRepo;
+	
 	@Autowired
 	private ImagenRepository imagenRepo;
 	//private UsuarioRepository usuarioRepo;
@@ -34,13 +40,7 @@ class DemoApplicationTests {
 
 	@Test
 	public void should_find_no_personas_if_repository_is_empty() {
-		
-		/*
-		 * Persona persona = new Persona(); persona.setNombre("gian");
-		 * persona.setApellido("camin"); persona.setDni(1111111);
-		 * personaRepo.save(persona);
-		 */
-		
+				
 		assertThat(personaRepo.findAll()).isEmpty();
 	}
 
@@ -49,26 +49,52 @@ class DemoApplicationTests {
 				
 		Unidad unidad = new Unidad();
 		unidad.setNro(5);unidad.setPiso(1);unidad.setEstado(EstadoUnidad.HabitadaPorDuenio);
-		unidadRepo.save(unidad);
+		Unidad unidadPersistida = unidadRepo.save(unidad);
 				
-		assertThat(unidadRepo.findById(1).get()).hasFieldOrPropertyWithValue("piso", 1);
+		assertThat(unidadPersistida).hasFieldOrPropertyWithValue("piso", 1);
+		assertThat(unidadPersistida).hasFieldOrPropertyWithValue("estado", EstadoUnidad.HabitadaPorDuenio);
+		assertThat(unidadPersistida).hasFieldOrPropertyWithValue("nro", 5);
 	}
 
 	@Test
 	public void should_find_all_Edificios() {
 		
-		Edificio edificio = new Edificio();
-		edificio.setDireccion("rivadavia");
-		edificioRepo.save(edificio);
+		Edificio edificio1 = new Edificio();
+		edificio1.setDireccion("rivadavia 3333");
+		edificioRepo.save(edificio1);
 		
-		assertThat(edificioRepo.findAll()).isNotEmpty();
+		Edificio edificio2 = new Edificio();
+		edificio2.setDireccion("corrientes 2222");
+		edificioRepo.save(edificio2);
+		
+		Edificio edificio3 = new Edificio();
+		edificio3.setDireccion("Belgrano 1111");
+		edificioRepo.save(edificio3);
+		
+		assertThat(edificioRepo.findAll()).hasSize(3).contains(edificio1,edificio2,edificio3);
 	}
 
-/*
+
 	@Test
 	public void should_find_Reclamo_by_id() {
+	
+	Reclamo reclamo1 = new Reclamo();
+	reclamo1.setTitulo("Reclamo testing");
+	reclamo1.setDescripcion("This is a test");
+	reclamo1.setEstadoReclamo(EstadoReclamo.Nuevo);
+    reclamoRepo.save(reclamo1);
+
+    Reclamo reclamo2 = new Reclamo();
+	reclamo2.setTitulo("Reclamo testing 2");
+	reclamo2.setDescripcion("This is a second test");
+	reclamo2.setEstadoReclamo(EstadoReclamo.Cerrado);
+    reclamoRepo.save(reclamo2);
+
+    Reclamo foundReclamo = reclamoRepo.findById(reclamo2.getId()).get();
+
+    assertThat(foundReclamo).isEqualTo(reclamo2);
+    
 	}
-*/
 	@Test
 	public void should_delete_Imagen_by_id() {
 		Imagen imagen = new Imagen();
