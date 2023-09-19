@@ -8,15 +8,16 @@ import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.UsuarioRepository;
 import com.group1.dev.app.model.entity.Usuario;
+
 @Service
 public class UsuarioService implements IUsuarioService {
-	
+
 	@Autowired
 	private UsuarioRepository usuarioRepo;
 
 	@Override
 	public List<Usuario> findAll() {
-		return (List<Usuario>)usuarioRepo.findAll();
+		return (List<Usuario>) usuarioRepo.findAll();
 	}
 
 	@Override
@@ -27,13 +28,13 @@ public class UsuarioService implements IUsuarioService {
 	@Override
 	public void save(Usuario usuario) {
 		usuarioRepo.save(usuario);
-		
+
 	}
 
 	@Override
 	public void deleteById(int id) {
 		usuarioRepo.deleteById(id);
-		
+
 	}
 
 }

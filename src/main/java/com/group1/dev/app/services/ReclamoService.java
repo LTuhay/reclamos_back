@@ -8,15 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.ReclamoRepository;
 import com.group1.dev.app.model.entity.Reclamo;
+
+
 @Service
 public class ReclamoService implements IReclamoService {
-	
+
 	@Autowired
 	private ReclamoRepository reclamoRepo;
 
 	@Override
 	public List<Reclamo> findAll() {
-		return (List<Reclamo>)reclamoRepo.findAll();
+		return (List<Reclamo>) reclamoRepo.findAll();
 	}
 
 	@Override
@@ -27,13 +29,13 @@ public class ReclamoService implements IReclamoService {
 	@Override
 	public void save(Reclamo reclamo) {
 		reclamoRepo.save(reclamo);
-		
+
 	}
 
 	@Override
 	public void deleteById(int id) {
 		reclamoRepo.deleteById(id);
-		
+
 	}
 
 }

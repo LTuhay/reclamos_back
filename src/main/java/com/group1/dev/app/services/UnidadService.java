@@ -11,7 +11,7 @@ import com.group1.dev.app.model.entity.Unidad;
 
 @Service
 public class UnidadService implements IUnidadService {
-	
+
 	@Autowired
 	private UnidadRepository unidadRepo;
 
@@ -29,7 +29,7 @@ public class UnidadService implements IUnidadService {
 	public void save(Unidad unidad) {
 		unidadRepo.save(unidad);
 	}
-	
+
 	@Override
 	public void deleteById(int id) {
 		// TODO Auto-generated method stub

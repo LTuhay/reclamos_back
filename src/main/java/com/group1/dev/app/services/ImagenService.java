@@ -8,15 +8,17 @@ import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.ImagenRepository;
 import com.group1.dev.app.model.entity.Imagen;
+
+
 @Service
 public class ImagenService implements IImagenService {
 
 	@Autowired
 	private ImagenRepository imagenRepo;
-	
+
 	@Override
 	public List<Imagen> findAll() {
-		return (List<Imagen>)imagenRepo.findAll();
+		return (List<Imagen>) imagenRepo.findAll();
 	}
 
 	@Override
