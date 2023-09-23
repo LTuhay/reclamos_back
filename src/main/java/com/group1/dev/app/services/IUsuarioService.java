@@ -13,6 +13,8 @@ public interface IUsuarioService {
 
 	public Optional<Usuario> findById(int id);
 
+	public Usuario findUser(String username, String password);
+
 	public void save(Usuario usuario);
 
 	public void deleteById(int id);

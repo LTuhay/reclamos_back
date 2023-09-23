@@ -4,6 +4,6 @@ import org.springframework.data.repository.CrudRepository;
 
 import com.group1.dev.app.model.entity.Usuario;
 
-public interface UsuarioRepository extends CrudRepository<Usuario,Integer> {
+public interface UsuarioRepository extends UsuarioRepositoryCustom, CrudRepository<Usuario,Integer> {
 
 }
