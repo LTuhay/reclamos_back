@@ -23,7 +23,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 @RequestMapping("/auth")
 public class AuthController {
 
-	private final int EXPIRATION_TIME_IN_MIN = 1;
+	private final int EXPIRATION_TIME_IN_MIN = 10;
 	
 	@Autowired
 	private IUsuarioService usuarioService;
@@ -36,7 +36,7 @@ public class AuthController {
 		System.out.print(credentials.getNombreUsuario());
 		if (usuarioService.findUser(credentials.getNombreUsuario(), credentials.getPassword()) != null) {
 			// Crear el token JWT
-			String token = Jwts.builder().setSubject(credentials.getNombre()).setIssuedAt(new Date())
+			String token = Jwts.builder().setSubject(credentials.getNombreUsuario()).setIssuedAt(new Date())
 					.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MIN * 60 * 1000))
 					.signWith(secretKey, SignatureAlgorithm.HS256).compact();
 

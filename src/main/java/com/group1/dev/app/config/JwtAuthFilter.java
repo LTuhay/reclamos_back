@@ -33,8 +33,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 			if (token != null && validateToken(token)) {
 				String username = extractUsernameFromToken(token);
-
+				
 				if (username != null) {
+					
 					UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
 							username, null, null);
 					authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
@@ -95,8 +96,9 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 	public String extractUsernameFromToken(String token) {
 		try {
+			
 			Claims claims = Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token).getBody();
-
+			System.out.println(claims.getSubject() + " prueba ");
 			// Extraer el nombre de usuario de la carga útil del token
 			String username = claims.getSubject();
 			return username;

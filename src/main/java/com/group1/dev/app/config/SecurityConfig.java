@@ -27,11 +27,11 @@ public class SecurityConfig {
         http.authorizeHttpRequests(
                 (authz) -> authz.anyRequest().authenticated())
                 .addFilterBefore(jwtAuth(), UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+        return http.getOrBuild();
     }
     
     @Bean
-	public JwtAuthFilter jwtAuth() {
+    public JwtAuthFilter jwtAuth() {
 		return new JwtAuthFilter(secretKey());
 	}
 
