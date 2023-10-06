@@ -32,7 +32,6 @@ public class UnidadService implements IUnidadService {
 
 	@Override
 	public void deleteById(int id) {
-		// TODO Auto-generated method stub
 		unidadRepo.deleteById(id);
 	}
 
