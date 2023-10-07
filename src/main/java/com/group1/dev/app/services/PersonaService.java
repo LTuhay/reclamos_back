@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.PersonaRepository;
+import com.group1.dev.app.model.dao.PersonaRepositoryImpl;
 import com.group1.dev.app.model.entity.Persona;
 
 @Service
@@ -14,6 +15,9 @@ public class PersonaService implements IPersonaService {
 
 	@Autowired
 	private PersonaRepository personaRepo;
+	
+	@Autowired
+	private PersonaRepositoryImpl personaRepoImpl;
 
 	@Override
 	public List<Persona> findAll() {
@@ -33,6 +37,11 @@ public class PersonaService implements IPersonaService {
 	@Override
 	public void deleteById(int id) {
 		personaRepo.deleteById(id);
+	}
+
+	@Override
+	public Persona findPersonadni(int dni) {
+		return personaRepoImpl.findPersonadni(dni);
 	}
 
 }

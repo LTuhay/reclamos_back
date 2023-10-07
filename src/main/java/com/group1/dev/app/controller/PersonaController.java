@@ -42,13 +42,26 @@ public class PersonaController {
 
 	}
 
+	@GetMapping(value = "/findDni")
+	public ResponseEntity<?> getPersonaDni(@RequestParam("dni") int personaDni) {
+
+		Optional<Persona> persona = Optional.of(personaService.findPersonadni(personaDni));
+		if (!persona.isPresent()) {
+			String mensaje = "Persona no encontrada con DNI: " + personaDni;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+		return new ResponseEntity<Persona>(persona.get(), HttpStatus.OK);
+
+	}
+
 	@PostMapping("/add")
 	public ResponseEntity<Persona> addPersona(@RequestBody Persona persona) {
 
 		personaService.save(persona);
 		return new ResponseEntity<Persona>(persona, HttpStatus.CREATED);
 	}
-	
+
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deletePersona(@RequestParam("id") int personaId) {
 
@@ -57,10 +70,10 @@ public class PersonaController {
 			String mensaje = "Persona no encontrada con ID: " + personaId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
-		
+
 		personaService.deleteById(personaId);
 		String mensaje = "Persona eliminada con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 	}
-	
+
 }
