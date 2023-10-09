@@ -3,8 +3,6 @@ package com.group1.dev.app.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,48 +16,33 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Reclamos")
 public class Reclamo {
-
+	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-<<<<<<< Updated upstream
 	private int id;
-=======
-	private Integer id_reclamo;
->>>>>>> Stashed changes
 	private String titulo;
-
+	
 	@ManyToOne
-<<<<<<< Updated upstream
 	@JoinColumn(name="Persona_FK")
 	private Usuario usuario;
-=======
-	@JoinColumn(name = "id")
-	private Persona persona;
->>>>>>> Stashed changes
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
 	private String actualizacion;
-
-	@OneToMany(mappedBy = "reclamo", cascade = CascadeType.ALL)
+	
+	@OneToMany(mappedBy="reclamo", cascade = CascadeType.ALL)
 	private List<Imagen> fotos = new ArrayList<Imagen>();
-
+	
 	@ManyToOne
-	@JoinColumn(name = "edificio_id")
+	@JoinColumn(name="edificio_id")
 	private Edificio edificio;
-
+	
 	public Reclamo() {
 
 	}
 
-	@JsonIgnore
 	public int getId() {
-<<<<<<< Updated upstream
 		return id;
-=======
-
-		return id_reclamo;
->>>>>>> Stashed changes
 	}
 
 	public void setId(int id) {
@@ -121,24 +104,19 @@ public class Reclamo {
 	public void setFotos(List<Imagen> fotos) {
 		this.fotos = fotos;
 	}
-
+	
 	public Edificio getEdificio() {
 		return edificio;
 	}
-
+	
 	public void setEdificio(Edificio edificio) {
 		this.edificio = edificio;
 	}
 
 	@Override
 	public String toString() {
-<<<<<<< Updated upstream
 		return "Reclamo [id=" + id + ", titulo=" + titulo + ", usuario=" + usuario + ", descripcion=" + descripcion
 				+ ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", actualizacion="
-=======
-		return "Reclamo [id=" + id_reclamo + ", titulo=" + titulo + ", persona=" + persona + ", descripcion="
-				+ descripcion + ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", actualizacion="
->>>>>>> Stashed changes
 				+ actualizacion + ", fotos=" + fotos + ", edificio=" + edificio + "]";
 	}
 
