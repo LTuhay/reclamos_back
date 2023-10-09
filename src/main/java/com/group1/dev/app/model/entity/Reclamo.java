@@ -19,7 +19,7 @@ public class Reclamo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id_reclamo;
+	private Integer id_reclamo;
 	private String titulo;
 	
 	@ManyToOne

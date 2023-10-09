@@ -2,21 +2,20 @@ package com.group1.dev.app.services;
 
 import java.util.ArrayList;
 
+import com.group1.dev.app.model.entity.Reclamo;
 
-import com.group1.dev.app.model.entity.ReclamoDTO;
+public interface IReclamoService {
 
-public interface IReclamoService  {
-	
-	public ArrayList<ReclamoDTO> findAll();
+	public ArrayList<Reclamo> findAll();
 
-	public ReclamoDTO findById(int id);
+	public Reclamo findById(Integer id);
 
-	public void save(ReclamoDTO reclamoDTO);
+	public void save(Reclamo reclamo);
 
-	public void deleteById(int id);
-	
-	public void update(ReclamoDTO reclamoDTO) ;
-	
-	public ArrayList<ReclamoDTO> filter(int userId, int buildingId, String state, String type);
+	public void deleteById(Integer id);
+
+	public void update(Integer id,Reclamo reclamoNew);
+
+	public ArrayList<Reclamo> filter(Integer userId, Integer buildingId, String state, String type);
 
 }
