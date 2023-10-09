@@ -8,7 +8,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.group1.dev.app.model.dao.EdificioRepository;
 import com.group1.dev.app.model.dao.ImagenRepository;
-import com.group1.dev.app.model.dao.PersonaRepository;
+import com.group1.dev.app.model.dao.IPersonaRepository;
 import com.group1.dev.app.model.dao.ReclamoRepository;
 import com.group1.dev.app.model.dao.UnidadRepository;
 import com.group1.dev.app.model.entity.Edificio;
@@ -22,7 +22,7 @@ import com.group1.dev.app.model.entity.Unidad;
 class DemoApplicationTests {
 	
 	@Autowired
-	private PersonaRepository personaRepo;
+	private IPersonaRepository personaRepo;
 	
 	@Autowired
 	private UnidadRepository unidadRepo;
