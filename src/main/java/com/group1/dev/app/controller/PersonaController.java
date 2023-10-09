@@ -69,9 +69,9 @@ public class PersonaController {
 
 	}
 
-	@PutMapping(value = "/update")
-	public ResponseEntity<?> updatePersona(@PathVariable int id, @RequestBody Persona updatedPersona) {
-		Optional<Persona> existingPersonaOptional = (personaService.findById(id));
+	@PutMapping(value = "/update/{dni}")
+	public ResponseEntity<?> updatePersona(@PathVariable int dni, @RequestBody Persona updatedPersona) {
+		Optional<Persona> existingPersonaOptional = Optional.of(personaService.findPersonaDni(dni));
 
 		if (existingPersonaOptional.isPresent()) {
 			Persona existingPersona = existingPersonaOptional.get();
@@ -86,7 +86,7 @@ public class PersonaController {
 
 			return ResponseEntity.ok(existingPersona);
 		} else {
-			String mensaje = "Persona no encontrada con DNI: " + id;
+			String mensaje = "Persona no encontrada con DNI: " + dni;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
