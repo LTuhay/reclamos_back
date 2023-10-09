@@ -19,12 +19,12 @@ public class Reclamo {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private int id_reclamo;
 	private String titulo;
 	
 	@ManyToOne
-	@JoinColumn(name="Persona_FK")
-	private Usuario usuario;
+	@JoinColumn(name="id")
+	private Persona persona;
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
@@ -42,11 +42,11 @@ public class Reclamo {
 	}
 
 	public int getId() {
-		return id;
+		return id_reclamo;
 	}
 
 	public void setId(int id) {
-		this.id = id;
+		this.id_reclamo = id;
 	}
 
 	public String getTitulo() {
@@ -57,12 +57,12 @@ public class Reclamo {
 		this.titulo = titulo;
 	}
 
-	public Usuario getUsuario() {
-		return usuario;
+	public Persona getPersona() {
+		return persona;
 	}
 
-	public void setUsuario(Usuario usuario) {
-		this.usuario = usuario;
+	public void setPersona(Persona persona) {
+		this.persona = persona;
 	}
 
 	public String getDescripcion() {
@@ -115,7 +115,7 @@ public class Reclamo {
 
 	@Override
 	public String toString() {
-		return "Reclamo [id=" + id + ", titulo=" + titulo + ", usuario=" + usuario + ", descripcion=" + descripcion
+		return "Reclamo [id=" + id_reclamo + ", titulo=" + titulo + ", persona=" + persona + ", descripcion=" + descripcion
 				+ ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", actualizacion="
 				+ actualizacion + ", fotos=" + fotos + ", edificio=" + edificio + "]";
 	}
