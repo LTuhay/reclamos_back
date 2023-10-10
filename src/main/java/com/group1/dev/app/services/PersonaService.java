@@ -6,18 +6,18 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.group1.dev.app.model.dao.PersonaRepository;
-import com.group1.dev.app.model.dao.PersonaRepositoryImpl;
+import com.group1.dev.app.model.dao.IPersonaRepository;
+import com.group1.dev.app.model.dao.IPersonaRepositoryCustom;
 import com.group1.dev.app.model.entity.Persona;
 
 @Service
 public class PersonaService implements IPersonaService {
 
 	@Autowired
-	private PersonaRepository personaRepo;
+	private IPersonaRepository personaRepo;
 	
 	@Autowired
-	private PersonaRepositoryImpl personaRepoImpl;
+	private IPersonaRepositoryCustom personaRepoImpl;
 
 	@Override
 	public List<Persona> findAll() {
@@ -40,8 +40,13 @@ public class PersonaService implements IPersonaService {
 	}
 
 	@Override
-	public Persona findPersonadni(int dni) {
-		return personaRepoImpl.findPersonadni(dni);
+	public Persona findPersonaDni(int dni) {
+		return personaRepoImpl.findPersonaDni(dni);
+	}
+
+	@Override
+	public List<Persona> findPersonaApellido(String apellido) {
+		return personaRepoImpl.findPersonaApellido(apellido);
 	}
 
 }
