@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import com.group1.dev.app.model.entity.Persona;
+import com.group1.dev.app.model.entity.PersonaDTO;
 
 public interface IPersonaService {
 
@@ -18,5 +19,9 @@ public interface IPersonaService {
 	public Persona findPersonaDni(int dni);
 	
 	public List<Persona> findPersonaApellido(String apellido);
+	
+	public PersonaDTO personaToDTO(Persona persona);
+	
+	public Persona dtoToPersona(PersonaDTO personaDTO);
 
 }

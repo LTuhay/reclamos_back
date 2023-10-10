@@ -3,19 +3,23 @@ package com.group1.dev.app.services;
 import java.util.List;
 import java.util.Optional;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.UnidadRepository;
-import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.Persona;
 import com.group1.dev.app.model.entity.Unidad;
+import com.group1.dev.app.model.entity.UnidadDTO;
 
 @Service
 public class UnidadService implements IUnidadService {
 
 	@Autowired
 	private UnidadRepository unidadRepo;
+	
+	@Autowired
+	private ModelMapper modelMapper;
 
 	@Override
 	public List<Unidad> findAll() {
@@ -59,6 +63,16 @@ public class UnidadService implements IUnidadService {
           return unidad.getPersonas();
           
     }
+
+	@Override
+	public UnidadDTO unidadToDTO(Unidad unidad) {
+		return modelMapper.map(unidad, UnidadDTO.class);	
+		}
+
+	@Override
+	public Unidad dtoToUnidad(UnidadDTO unidadDTO) {
+		return modelMapper.map(unidadDTO, Unidad.class);
+	}
     
 
 }
