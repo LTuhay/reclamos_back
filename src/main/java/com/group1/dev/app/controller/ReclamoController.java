@@ -29,7 +29,7 @@ import com.group1.dev.app.exceptions.ReclamoNotFoundException;
 
 
 @RestController
-@RequestMapping("/api/v5/reclamo")
+@RequestMapping("/reclamo")
 public class ReclamoController {
 	
 	@Autowired
