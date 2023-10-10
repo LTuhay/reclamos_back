@@ -75,6 +75,14 @@ public class Unidad {
 	public void setPersonas(List<Persona> personas) {
 		this.personas = personas;
 	}
+	
+	public void addPersona(Persona persona) {
+		personas.add(persona);
+	}
+	
+	public void delPersona(Persona persona) {
+		personas.remove(persona);
+	}
 
 	public Edificio getEdificio() {
 		return edificio;
