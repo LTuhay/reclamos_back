@@ -15,16 +15,23 @@ public class EdificioService implements IEdificioService {
 	@Autowired
 	private EdificioRepository edificioRepo;
 
-	@Override
-	public List<Edificio> findAll() {
-		return (List<Edificio>) edificioRepo.findAll();
+	 @Override
+	   public List<Edificio> findAll() {
+	      return (List<Edificio>) edificioRepo.findAll();
 
-	}
+	   }
 
-	@Override
-	public Optional<Edificio> findById(int id) {
-		return edificioRepo.findById(id);
-	}
+	   @Override
+	   public Optional<Edificio> findById(int id) {
+	      Optional<Edificio> optionalEdificio = edificioRepo.findById(id);
+
+	   
+	    if (optionalEdificio.isPresent()) {
+	       return optionalEdificio;
+	    } else {
+	       return Optional.empty();
+	    }
+	   }
 
 	@Override
 	public void save(Edificio edificio) {
