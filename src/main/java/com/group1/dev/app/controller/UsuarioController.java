@@ -2,6 +2,7 @@ package com.group1.dev.app.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +17,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group1.dev.app.dto.UserDTO;
 import com.group1.dev.app.model.entity.Persona;
+import com.group1.dev.app.model.entity.User;
 import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.model.entity.Usuario;
-import com.group1.dev.app.model.entity.UsuarioDTO;
+import com.group1.dev.app.services.IUserService;
 import com.group1.dev.app.services.IUsuarioService;
+import com.group1.dev.app.services.UserMapper;
 
 import jakarta.persistence.EntityManager;
 
@@ -30,45 +34,51 @@ import jakarta.persistence.EntityManager;
 public class UsuarioController {
 
     @Autowired
-    private IUsuarioService usuarioService;
+    private IUserService usuarioService;
+    
+    @Autowired
+    private UserMapper userMapper;
 
     
     @GetMapping(value = "/all")
-	public List<Usuario> findAll() {
-		return usuarioService.findAll();
+	public List<UserDTO> findAll() {
+		return usuarioService.findAll()
+				.stream()
+				.map(userMapper)
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping(value = "/find")
 	public ResponseEntity<?> getUsuario(@RequestParam("id") int usuarioId) {
 
-		Optional<Usuario> usuario = usuarioService.findById(usuarioId);
+		Optional<UserDTO> usuario = usuarioService.findById(usuarioId)
+				.map(userMapper);
+		
 		if (!usuario.isPresent()) {
 			String mensaje = "Usuario no encontrada con ID: " + usuarioId;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-		return new ResponseEntity<Usuario>(usuario.get(), HttpStatus.OK);
+		return new ResponseEntity<UserDTO>(usuario.get(), HttpStatus.OK);
 
 	}
     
 	@PostMapping("/add")
-    public ResponseEntity<Usuario> addUsuario(@RequestBody Usuario usuario) {
+    public ResponseEntity<User> addUsuario(@RequestBody User usuario) {
         usuarioService.save(usuario);
-        return new ResponseEntity<Usuario>(usuario, HttpStatus.CREATED);
+        return new ResponseEntity<User>(usuario, HttpStatus.CREATED);
     }
 	
-	@PutMapping(value = "/update/{id}")
+	/*@PutMapping(value = "/update/{id}")
 	public ResponseEntity<?> updateUsuario(@PathVariable int id, @RequestBody Usuario updatedUsuario) {
-		Optional<Usuario> existingUsuarioOptional = usuarioService.findById(id);
+		Optional<User> existingUsuarioOptional = usuarioService.findById(id);
 
 		if (existingUsuarioOptional.isPresent()) {
-			Usuario existingUsuario = existingUsuarioOptional.get();
+			User existingUsuario = existingUsuarioOptional.get();
 
 			existingUsuario.setNombre(updatedUsuario.getNombre());
-			existingUsuario.setApellido(updatedUsuario.getApellido());
 			existingUsuario.setDni(updatedUsuario.getDni());
 			existingUsuario.setTipoPersona(updatedUsuario.getTipoPersona());
-			existingUsuario.setUnidad(updatedUsuario.getUnidad());
 
 			usuarioService.save(existingUsuario);
 
@@ -78,12 +88,12 @@ public class UsuarioController {
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-	}
+	}*/
 	
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteUsuario(@RequestParam("id") int usuarioId) {
 
-		Optional<Usuario> usuario = usuarioService.findById(usuarioId);
+		Optional<User> usuario = usuarioService.findById(usuarioId);
 		if (!usuario.isPresent()) {
 			String mensaje = "Usuario no encontrado con ID: " + usuarioId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);

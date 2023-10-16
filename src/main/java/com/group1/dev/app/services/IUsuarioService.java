@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.entity.Usuario;
+
 @Service
 public interface IUsuarioService {
 	

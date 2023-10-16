@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.group1.dev.app.model.entity.UsuarioDTO;
+import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.services.IUsuarioService;
 
 import io.jsonwebtoken.Jwts;
@@ -31,7 +31,7 @@ public class AuthController {
 	private SecretKey secretKey; // Inyecta la clave secreta
 
 	@PostMapping("/login")
-	public ResponseEntity<String> login(@RequestBody UsuarioDTO credentials) {
+	public ResponseEntity<String> login(@RequestBody Usuario credentials) {
 		System.out.print(credentials.getNombreUsuario());
 		if (usuarioService.findUser(credentials.getNombreUsuario(), credentials.getPassword()) != null) {
 			// Crear el token JWT

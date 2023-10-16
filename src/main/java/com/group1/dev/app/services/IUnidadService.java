@@ -5,7 +5,7 @@ import java.util.Optional;
 
 import com.group1.dev.app.model.entity.Persona;
 import com.group1.dev.app.model.entity.Unidad;
-import com.group1.dev.app.model.entity.UnidadDTO;
+
 
 public interface IUnidadService {
 
@@ -22,9 +22,5 @@ public interface IUnidadService {
 	public void save(Unidad unidad);
 
 	public void deleteById(int id);
-
-	public UnidadDTO unidadToDTO(Unidad unidad);
-
-	public Unidad dtoToUnidad(UnidadDTO unidadDTO);
 
 }
