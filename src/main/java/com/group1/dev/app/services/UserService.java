@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.UserRepository;
-import com.group1.dev.app.model.entity.User;
+import com.group1.dev.app.model.entity.EntityUser;
 
 @Service
 public class UserService implements IUserService {
@@ -17,19 +17,19 @@ public class UserService implements IUserService {
 
 	
 	@Override
-	public List<User> findAll() {
+	public List<EntityUser> findAll() {
 		
 		return userRepository.findAll();
 	}
 
 	@Override
-	public Optional<User> findById(int id) {
+	public Optional<EntityUser> findById(int id) {
 	
 		return userRepository.findById(id);
 	}
 
 	@Override
-	public void save(User user) {		
+	public void save(EntityUser user) {		
 		
 		userRepository.save(user);
 
@@ -42,9 +42,9 @@ public class UserService implements IUserService {
 		
 	}
 
-	public Optional<User> findByUsername(String username){
+	public Optional<EntityUser> findByUsername(String username){
 		
-		return null;
+		return userRepository.findByUsername(username);
 	
 	}
 

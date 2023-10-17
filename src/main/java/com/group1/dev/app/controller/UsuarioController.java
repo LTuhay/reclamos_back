@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group1.dev.app.dto.UserDTO;
+import com.group1.dev.app.mappers.UserMapper;
 import com.group1.dev.app.model.entity.Persona;
-import com.group1.dev.app.model.entity.User;
+import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.model.entity.Usuario;
 import com.group1.dev.app.services.IUserService;
 import com.group1.dev.app.services.IUsuarioService;
-import com.group1.dev.app.services.UserMapper;
 
 import jakarta.persistence.EntityManager;
 
@@ -64,9 +64,9 @@ public class UsuarioController {
 	}
     
 	@PostMapping("/add")
-    public ResponseEntity<User> addUsuario(@RequestBody User usuario) {
+    public ResponseEntity<EntityUser> addUsuario(@RequestBody EntityUser usuario) {
         usuarioService.save(usuario);
-        return new ResponseEntity<User>(usuario, HttpStatus.CREATED);
+        return new ResponseEntity<EntityUser>(usuario, HttpStatus.CREATED);
     }
 	
 	/*@PutMapping(value = "/update/{id}")
@@ -93,7 +93,7 @@ public class UsuarioController {
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteUsuario(@RequestParam("id") int usuarioId) {
 
-		Optional<User> usuario = usuarioService.findById(usuarioId);
+		Optional<EntityUser> usuario = usuarioService.findById(usuarioId);
 		if (!usuario.isPresent()) {
 			String mensaje = "Usuario no encontrado con ID: " + usuarioId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);

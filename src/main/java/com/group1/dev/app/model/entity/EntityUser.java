@@ -20,7 +20,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Users")
-public class User implements UserDetails {
+public class EntityUser implements UserDetails {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -59,25 +59,23 @@ public class User implements UserDetails {
 	@Enumerated(EnumType.STRING)
 	private TipoPersona tipoPersona;
 	
-	/*@ManyToOne
+	@ManyToOne
 	@JoinColumn(name="unidad_id")
-	private Unidad unidad;*/
+	private Unidad unidad;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		
 		return List.of(new SimpleGrantedAuthority(tipoPersona.name()));
 	}
-	
-	
 
-	public User() {
+	public EntityUser() {
 
 	}
 
-	public User(int id, String nombre, String email, int dni, int edad, String username, String password,
-			TipoPersona tipoPersona) {
-		super();
+	public EntityUser(int id, String nombre, String email, int dni, int edad, String username, String password,
+			TipoPersona tipoPersona, Unidad unidad) {
+		
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
@@ -86,8 +84,8 @@ public class User implements UserDetails {
 		this.username = username;
 		this.password = password;
 		this.tipoPersona = tipoPersona;
+		this.unidad = unidad;
 	}
-
 
 	@Override
 	public String getUsername() {
@@ -157,6 +155,14 @@ public class User implements UserDetails {
 		this.password = password;
 	}
 
+	public Unidad getUnidad() {
+		return unidad;
+	}
+
+	public void setUnidad(Unidad unidad) {
+		this.unidad = unidad;
+	}
+
 	@Override
 	public boolean isAccountNonExpired() {
 		// TODO Auto-generated method stub
@@ -179,6 +185,13 @@ public class User implements UserDetails {
 	public boolean isEnabled() {
 		// TODO Auto-generated method stub
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		return "User [id=" + id + ", nombre=" + nombre + ", email=" + email + ", dni=" + dni + ", edad=" + edad
+				+ ", username=" + username + ", password=" + password + ", tipoPersona=" + tipoPersona + ", unidad="
+				+ unidad + "]";
 	}
 
 }

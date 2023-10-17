@@ -11,10 +11,13 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
+
+import com.group1.dev.app.model.dao.UserRepository;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -22,6 +25,7 @@ import io.jsonwebtoken.security.Keys;
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+
     
 	@Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -34,7 +38,7 @@ public class SecurityConfig {
     
     @Bean
     public JwtAuthFilter jwtAuth() {
-		return new JwtAuthFilter(secretKey());
+		return new JwtAuthFilter();
 	}
 
 	@Bean
@@ -46,16 +50,5 @@ public class SecurityConfig {
                 .requestMatchers(mvcMatcherBuilder.pattern("/auth/login"))
             ;
 	}
-    
-    @Bean
-	public SecretKey secretKey() {
-		SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-		byte[] encodedKey = secretKey.getEncoded();
-		String encodedKeyBase64 = Base64.getEncoder().encodeToString(encodedKey);
 
-		// Registro de la clave secreta (solo para fines de depuración)
-		System.out.println("Secret Key (Base64): " + encodedKeyBase64);
-
-		return secretKey;
-	}
 }
