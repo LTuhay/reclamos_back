@@ -42,6 +42,8 @@ public class PersonaController {
 		return new ResponseEntity<Persona>(persona.get(), HttpStatus.OK);
 
 	}
+	
+	/*
 
 	@GetMapping(value = "/findDni")
 	public ResponseEntity<?> getPersonaDni(@RequestParam("dni") int personaDni) {
@@ -104,6 +106,6 @@ public class PersonaController {
 		personaService.deleteById(personaId);
 		String mensaje = "Persona eliminada con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
-	}
+	}*/
 
 }

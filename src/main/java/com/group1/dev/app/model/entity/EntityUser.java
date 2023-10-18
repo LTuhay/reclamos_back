@@ -21,51 +21,39 @@ import jakarta.persistence.Table;
 @Entity
 @Table(name = "Users")
 public class EntityUser implements UserDetails {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private String nombre;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private String email;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private int dni;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private int edad;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private String username;
-	
-	@Column(
-			nullable = false
-			)
+
+	@Column(nullable = false)
 	private String password;
-	
+
 	@Enumerated(EnumType.STRING)
 	private TipoPersona tipoPersona;
-	
+
 	@ManyToOne
-	@JoinColumn(name="unidad_id")
+	@JoinColumn(name = "unidad_id")
 	private Unidad unidad;
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		
+
 		return List.of(new SimpleGrantedAuthority(tipoPersona.name()));
 	}
 
@@ -75,7 +63,7 @@ public class EntityUser implements UserDetails {
 
 	public EntityUser(int id, String nombre, String email, int dni, int edad, String username, String password,
 			TipoPersona tipoPersona, Unidad unidad) {
-		
+
 		this.id = id;
 		this.nombre = nombre;
 		this.email = email;
@@ -85,6 +73,18 @@ public class EntityUser implements UserDetails {
 		this.password = password;
 		this.tipoPersona = tipoPersona;
 		this.unidad = unidad;
+	}
+
+	public EntityUser(String nombre, String email, int dni, int edad, String username, String password,
+			TipoPersona tipoPersona) {
+
+		this.nombre = nombre;
+		this.email = email;
+		this.dni = dni;
+		this.edad = edad;
+		this.username = username;
+		this.password = password;
+		this.tipoPersona = tipoPersona;
 	}
 
 	@Override
@@ -150,7 +150,7 @@ public class EntityUser implements UserDetails {
 		// TODO Auto-generated method stub
 		return password;
 	}
-	
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
