@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-	private final int EXPIRATION_TIME_IN_MIN = 60;
+	private final int EXPIRATION_TIME_IN_MIN = 1;
 
 	private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
@@ -50,11 +50,11 @@ public class JwtService {
 
 		String username = extractUsername(token);
 
-		return (username.equals(userDetails.getUsername()) && isTokenNotExpired(token));
+		return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
 
 	}
 
-	private boolean isTokenNotExpired(String token) {
+	private boolean isTokenExpired(String token) {
 
 		return extractExpiration(token).before(new Date());
 	}

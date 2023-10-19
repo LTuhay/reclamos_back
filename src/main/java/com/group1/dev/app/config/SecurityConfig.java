@@ -23,6 +23,7 @@ import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import com.group1.dev.app.Jwt.JwtAuthFilter;
 import com.group1.dev.app.Jwt.JwtService;
 import com.group1.dev.app.model.dao.UserRepository;
+import com.group1.dev.app.model.entity.TipoPersona;
 
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
@@ -37,6 +38,7 @@ public class SecurityConfig {
 	@Autowired
 	private JwtAuthFilter jwtAuthFilter;
 
+	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		return http.csrf(csrf -> csrf.disable())
@@ -49,11 +51,6 @@ public class SecurityConfig {
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
 
 	}
-/*
-	@Bean
-	public JwtAuthFilter jwtAuth() {
-		return new JwtAuthFilter();
-	}*/
 
 	@Bean
 	public WebSecurityCustomizer webSecurityCustomizer(HandlerMappingIntrospector introspector) {
