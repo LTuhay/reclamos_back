@@ -30,30 +30,24 @@ public class SecurityConfig {
 
 	
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http,HandlerMappingIntrospector introspector) throws Exception {
-		MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		new AntPathRequestMatcher("/edificios/**");
 		return http
 				.csrf(csrf -> csrf.disable())
-				/*
 				.authorizeHttpRequests(
 						authRequest -> authRequest
 						.requestMatchers(PathRequest.toH2Console()).permitAll()
-						//.requestMatchers(HttpMethod.DELETE)
-						//.hasRole("Administrador")
-						.requestMatchers(new AntPathRequestMatcher("/users/**"))
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/users/**"))
 						.hasAnyAuthority("Administrador")
-						.requestMatchers(new AntPathRequestMatcher("/edificios/**"))
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/edificios/**"))
+						.hasAnyAuthority("Administrador")
+						.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE))
 						.hasAnyAuthority("Administrador")
 						.requestMatchers(new AntPathRequestMatcher("/reclamo/**"))
 						.hasAnyAuthority("Administrador","Propietario","Inquilino","Empleado")
 						.requestMatchers(new AntPathRequestMatcher("/auth/**"))
 						.anonymous()
-						.anyRequest().authenticated())*/
-				.authorizeHttpRequests()
-				.requestMatchers("/users/**")
-				.hasAnyAuthority("Administrador")
-				.anyRequest().authenticated()
-				.and()
+						.anyRequest().authenticated())
 				.sessionManagement(
 						//Deshabilita la politica de creacion de sesiones
 						sessionManager -> sessionManager.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -61,13 +55,5 @@ public class SecurityConfig {
 				.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class).build();
 
 	}
-
-	/*
-	@Bean
-	public WebSecurityCustomizer webSecurityCustomizer(HandlerMappingIntrospector introspector) {
-		MvcRequestMatcher.Builder mvcMatcherBuilder = new MvcRequestMatcher.Builder(introspector);
-		return (web) -> web.ignoring().requestMatchers(PathRequest.toH2Console());
-	}
-	*/
 
 }
