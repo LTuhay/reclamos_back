@@ -16,7 +16,7 @@ import io.jsonwebtoken.security.Keys;
 @Service
 public class JwtService {
 
-	private final int EXPIRATION_TIME_IN_MIN = 1;
+	private final int EXPIRATION_TIME_IN_MIN = 60;
 
 	private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 

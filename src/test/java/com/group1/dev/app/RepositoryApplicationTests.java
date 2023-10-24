@@ -19,7 +19,7 @@ import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.Unidad;
 
 @DataJpaTest
-class DemoApplicationTests {
+class RepositoryApplicationTests {
 	
 	@Autowired
 	private IPersonaRepository personaRepo;
