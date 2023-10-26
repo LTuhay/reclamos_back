@@ -6,15 +6,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.group1.dev.app.model.entity.EntityUser;
 
-public interface UserRepository extends JpaRepository<EntityUser,Integer>{
+public interface UserRepository extends JpaRepository<EntityUser, Integer> {
 
-	//Query Method
+	// Query Method
 	Optional<EntityUser> findByUsername(String username);
-	
+
 	Optional<EntityUser> findByEmail(String email);
-	
+
 	Optional<EntityUser> findByDni(int dni);
-	
+
 	void deleteByUsername(String username);
-	
 }

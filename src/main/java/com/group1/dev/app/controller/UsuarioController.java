@@ -76,7 +76,7 @@ public class UsuarioController {
 		}
 
 	}
-
+	
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteUsuario(@RequestParam("username") String username) {
 
