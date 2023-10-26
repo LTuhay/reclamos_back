@@ -25,7 +25,7 @@ public class Unidad {
     private EstadoUnidad estado;
     
     @OneToMany(mappedBy = "unidad", cascade = CascadeType.ALL)
-    private List<Persona> personas = new ArrayList<Persona>();
+    private List<EntityUser> personas = new ArrayList<EntityUser>();
     
     
     @ManyToOne
@@ -67,20 +67,16 @@ public class Unidad {
 	public void setEstado(EstadoUnidad estado) {
 		this.estado = estado;
 	}
-
-	public List<Persona> getPersonas() {
-		return personas;
-	}
-
-	public void setPersonas(List<Persona> personas) {
-		this.personas = personas;
-	}
 	
-	public void addPersona(Persona persona) {
+	public void addPersona(EntityUser persona) {
 		personas.add(persona);
 	}
 	
-	public void delPersona(Persona persona) {
+	public List<EntityUser> getPersonas() {
+		return personas;
+	}
+	
+	public void delPersona(EntityUser persona) {
 		personas.remove(persona);
 	}
 

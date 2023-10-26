@@ -16,10 +16,10 @@ import com.group1.dev.app.model.entity.TipoReclamo;
 public class ReclamoService implements IReclamoService {
 
 	@Autowired
-	private PersonaService personaService;
+	private IUserService userService;
 
 	@Autowired
-	private EdificioService edificioService;
+	private IEdificioService edificioService;
 
 	@Autowired
 	private ReclamoRepository reclamoRepo;
@@ -69,7 +69,7 @@ public class ReclamoService implements IReclamoService {
 		Reclamo reclamo = new Reclamo();
 
 		if (userId != null) {
-			reclamo.setPersona(personaService.findById(userId).get());
+			reclamo.setPersona(userService.findById(userId).get());
 		}
 		if (buildingId != null) {
 			reclamo.setEdificio(edificioService.findById(buildingId).get());

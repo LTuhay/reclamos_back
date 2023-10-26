@@ -27,15 +27,15 @@ public class UnidadController {
 
 	@Autowired
 	private IUnidadService unidadService;
-	
+
 	@GetMapping("/all")
-	public List<Unidad> findAll(){
-		
-		return unidadService.findAll();	
+	public List<Unidad> findAll() {
+
+		return unidadService.findAll();
 	}
-	
+
 	@GetMapping(value = "/findById")
-	public ResponseEntity<?> getUnidad(@RequestParam("id") int unidadId) {	
+	public ResponseEntity<?> getUnidad(@RequestParam("id") int unidadId) {
 		Optional<Unidad> unidad = unidadService.findById(unidadId);
 		if (!unidad.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
@@ -45,7 +45,6 @@ public class UnidadController {
 		return new ResponseEntity<>(unidad.get(), HttpStatus.OK);
 
 	}
-	
 
 	@PostMapping("/add")
 	public ResponseEntity<Unidad> addUnidad(@RequestBody Unidad unidad) {
@@ -53,61 +52,60 @@ public class UnidadController {
 		unidadService.save(unidad);
 		return new ResponseEntity<Unidad>(unidad, HttpStatus.CREATED);
 	}
-	
+
 	@PostMapping("/addPersona")
 	public ResponseEntity<String> addPersona(@RequestParam("id") int unidadId, @RequestBody Persona persona) {
-        Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
-        if (!unidadOptional.isPresent()) {
+		Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
+		if (!unidadOptional.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-        }	
-        Unidad unidad = unidadOptional.get();
-        unidadService.addPersona(unidad, persona);
-        unidadService.save(unidad);
-        String mensaje = "Persona agregada con exito a la unidad";
-        return new ResponseEntity<>(mensaje, HttpStatus.CREATED);
-        
+		}
+		Unidad unidad = unidadOptional.get();
+		unidadService.addPersona(unidad, persona);
+		unidadService.save(unidad);
+		String mensaje = "Persona agregada con exito a la unidad";
+		return new ResponseEntity<>(mensaje, HttpStatus.CREATED);
+
 	}
-	
+
 	@PostMapping("/delPersona")
 	public ResponseEntity<String> delPersona(@RequestParam("idu") int unidadId, @RequestParam("idp") int personaId) {
-	    Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
-	    if (!unidadOptional.isPresent()) {
-	        String mensaje = "Unidad no encontrada con ID: " + unidadId;
-	        return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-	    }
-	    Unidad unidad = unidadOptional.get();
-	    Optional<Persona> personaOptional = unidad.getPersonas().stream()
-	            .filter(persona -> persona.getId() == personaId)
-	            .findFirst();
-	    if (!personaOptional.isPresent()) {
-	        String mensaje = "Persona no encontrada con ID: " + personaId;
-	        return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-	    }
-
-	    Persona persona = personaOptional.get();
-	    unidadService.delPersona(unidad, persona);
-	    unidadService.save(unidad);
-	    String mensaje = "Persona eliminada con éxito de la unidad";
-	    return new ResponseEntity<>(mensaje, HttpStatus.OK);
-	}
-	
-	@GetMapping(value = "/findPersonas")	
-    public ResponseEntity<?> findPersonasByUnidadId(@RequestParam("id")int unidadId) {
-        Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
-        if (!unidadOptional.isPresent()) {        	
+		Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
+		if (!unidadOptional.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-        }
-         Unidad unidad = unidadOptional.get();
-         List<Persona> personas = unidadService.findPersonasByUnidadId(unidad);
-         if (personas.isEmpty()) {
-        	 String mensaje = "La unidad no contiene personas: " + unidadId;
-        	 return new ResponseEntity<>(mensaje,HttpStatus.NOT_FOUND);
-         }
- 		return new ResponseEntity<>(personas, HttpStatus.OK);
-        }
-	
+		}
+		Unidad unidad = unidadOptional.get();
+		Optional<Persona> personaOptional = unidad.getPersonas().stream()
+				.filter(persona -> persona.getId() == personaId).findFirst();
+		if (!personaOptional.isPresent()) {
+			String mensaje = "Persona no encontrada con ID: " + personaId;
+			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+		Persona persona = personaOptional.get();
+		unidadService.delPersona(unidad, persona);
+		unidadService.save(unidad);
+		String mensaje = "Persona eliminada con éxito de la unidad";
+		return new ResponseEntity<>(mensaje, HttpStatus.OK);
+	}
+
+	@GetMapping(value = "/findPersonas")
+	public ResponseEntity<?> findPersonasByUnidadId(@RequestParam("id") int unidadId) {
+		Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
+		if (!unidadOptional.isPresent()) {
+			String mensaje = "Unidad no encontrada con ID: " + unidadId;
+			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+		}
+		Unidad unidad = unidadOptional.get();
+		List<Persona> personas = unidadService.findPersonasByUnidadId(unidad);
+		if (personas.isEmpty()) {
+			String mensaje = "La unidad no contiene personas: " + unidadId;
+			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+		}
+		return new ResponseEntity<>(personas, HttpStatus.OK);
+	}
+
 	@DeleteMapping("/delete")
 	public ResponseEntity<String> deleteUnidad(@RequestParam("id") int unidadId) {
 
@@ -116,26 +114,26 @@ public class UnidadController {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
-		
+
 		unidadService.deleteById(unidadId);
 		String mensaje = "Unidad eliminada con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
-		
+
 	}
-	
+
 	@PutMapping(value = "/update/{id}")
 	public ResponseEntity<?> updateUnidad(@PathVariable int id, @RequestBody Unidad updatedUnidad) {
-        Optional<Unidad> unidadOptional = unidadService.findById(id);
+		Optional<Unidad> unidadOptional = unidadService.findById(id);
 
 		if (unidadOptional.isPresent()) {
 			Unidad unidad = unidadOptional.get();
 
-	        unidad.setEdificio(updatedUnidad.getEdificio());
-	        unidad.setEstado(updatedUnidad.getEstado());
-	        unidad.setNro(updatedUnidad.getNro());
-	        unidad.setPersonas(updatedUnidad.getPersonas());
-	        unidad.setPiso(updatedUnidad.getPiso());
-	        unidadService.save(unidad);
+			unidad.setEdificio(updatedUnidad.getEdificio());
+			unidad.setEstado(updatedUnidad.getEstado());
+			unidad.setNro(updatedUnidad.getNro());
+			unidad.setPersonas(updatedUnidad.getPersonas());
+			unidad.setPiso(updatedUnidad.getPiso());
+			unidadService.save(unidad);
 
 			return ResponseEntity.ok(unidad);
 		} else {
@@ -144,5 +142,5 @@ public class UnidadController {
 		}
 
 	}
-	
+
 }

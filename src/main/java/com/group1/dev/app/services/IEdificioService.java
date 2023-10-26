@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Optional;
 
 import com.group1.dev.app.model.entity.Edificio;
-import com.group1.dev.app.model.entity.Persona;
 import com.group1.dev.app.model.entity.Unidad;
 
 public interface IEdificioService {
@@ -23,6 +22,6 @@ public interface IEdificioService {
 	
 	public void delUnidad (Edificio edificio, Unidad unidad);
 	
-	public List<Unidad> findUnidadesByEdificioId(Edificio edificio); 
+	public List<Unidad> findUnidadesByEdificioId(int id); 
 
 }

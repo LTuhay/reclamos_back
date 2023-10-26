@@ -1,5 +1,6 @@
 package com.group1.dev.app.model.entity;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
@@ -7,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -16,6 +18,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -50,6 +53,9 @@ public class EntityUser implements UserDetails {
 	@ManyToOne
 	@JoinColumn(name = "unidad_id")
 	private Unidad unidad;
+	
+	@OneToMany(mappedBy="persona", cascade = CascadeType.ALL)
+	private List<Reclamo> reclamos = new ArrayList<Reclamo>();
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -161,6 +167,14 @@ public class EntityUser implements UserDetails {
 
 	public void setUnidad(Unidad unidad) {
 		this.unidad = unidad;
+	}
+
+	public List<Reclamo> getReclamos() {
+		return reclamos;
+	}
+
+	public void setReclamos(List<Reclamo> reclamos) {
+		this.reclamos = reclamos;
 	}
 
 	@Override

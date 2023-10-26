@@ -24,7 +24,7 @@ public class Reclamo {
 	
 	@ManyToOne
 	@JoinColumn(name="id")
-	private Persona persona;
+	private EntityUser persona;
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
@@ -57,11 +57,11 @@ public class Reclamo {
 		this.titulo = titulo;
 	}
 
-	public Persona getPersona() {
+	public EntityUser getPersona() {
 		return persona;
 	}
 
-	public void setPersona(Persona persona) {
+	public void setPersona(EntityUser persona) {
 		this.persona = persona;
 	}
 
