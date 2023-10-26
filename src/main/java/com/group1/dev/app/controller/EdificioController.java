@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group1.dev.app.model.entity.Edificio;
-import com.group1.dev.app.model.entity.Persona;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IEdificioService;
 
@@ -60,7 +59,7 @@ public class EdificioController {
 
 	}
 	
-
+	/*
 	@PostMapping("/add")
 	public ResponseEntity<Edificio> addEdificio(@RequestBody Edificio edificio) {
 
@@ -156,5 +155,5 @@ public class EdificioController {
 		}
 
 	}
-	
+	*/
 }

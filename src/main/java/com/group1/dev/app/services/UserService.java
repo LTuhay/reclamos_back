@@ -48,4 +48,11 @@ public class UserService implements IUserService {
 	
 	}
 
+	@Override
+	public void deleteByUsername(String username) {
+		
+		userRepository.deleteByUsername(username);
+		
+	}
+
 }
