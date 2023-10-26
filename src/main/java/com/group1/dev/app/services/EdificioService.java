@@ -6,6 +6,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.group1.dev.app.dto.EdificioDTO;
 import com.group1.dev.app.model.dao.EdificioRepository;
 import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.Unidad;
@@ -35,7 +36,6 @@ public class EdificioService implements IEdificioService {
 	@Override
 	public void save(Edificio edificio) {
 		edificioRepo.save(edificio);
-
 	}
 
 	@Override

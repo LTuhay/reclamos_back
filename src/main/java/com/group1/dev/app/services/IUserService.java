@@ -17,7 +17,5 @@ public interface IUserService {
 	public void deleteById(int id);
 	
 	public Optional<EntityUser> findByUsername(String username);
-	
-	void deleteByUsername(String username);
 
 }

@@ -30,6 +30,14 @@ public class Edificio {
 
 	}
 
+	public Edificio(String direccion, List<Reclamo> reclamos, List<Unidad> unidades) {
+		this.direccion = direccion;
+		this.reclamos = reclamos;
+		this.unidades = unidades;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}

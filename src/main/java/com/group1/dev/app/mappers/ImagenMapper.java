@@ -2,9 +2,12 @@ package com.group1.dev.app.mappers;
 
 import java.util.function.Function;
 
+import org.springframework.stereotype.Service;
+
 import com.group1.dev.app.dto.ImagenDTO;
 import com.group1.dev.app.model.entity.Imagen;
 
+@Service
 public class ImagenMapper implements Function<Imagen,ImagenDTO>{
 
 	@Override

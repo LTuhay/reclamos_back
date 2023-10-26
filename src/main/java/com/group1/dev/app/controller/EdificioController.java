@@ -2,6 +2,7 @@ package com.group1.dev.app.controller;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group1.dev.app.dto.EdificioDTO;
+import com.group1.dev.app.mappers.EdificioMapper;
 import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IEdificioService;
@@ -27,18 +30,25 @@ public class EdificioController {
 	@Autowired
 	private IEdificioService edificioService;
 	
+	@Autowired
+	private EdificioMapper edificioMapper;
+	
 	@GetMapping("/all")
-	public List<Edificio> findAll(){
+	public List<EdificioDTO> findAll(){
 		
-		return edificioService.findAll();	
+		return edificioService
+				.findAll()
+				.stream()
+				.map(edificioMapper)
+				.collect(Collectors.toList());	
 	}
 	
-	@GetMapping(value = "/findById")
-	public ResponseEntity<?> getEdificio(@RequestParam("id") int edificioId) {
+	@GetMapping(value = "/find")
+	public ResponseEntity<?> getEdificio(@RequestParam("address") String address) {
 		
-		Optional<Edificio> edificio = edificioService.findById(edificioId);
+		Optional<EdificioDTO> edificio = edificioService.findByDireccion(address).map(edificioMapper);
 		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con el domicilio: " + edificioId;
+			String mensaje = "Edificio no encontrado con el domicilio: " + address;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
@@ -46,56 +56,54 @@ public class EdificioController {
 
 	}
 	
-	@GetMapping(value = "/findByDireccion")
-	public ResponseEntity<?> getEdificioDireccion(@RequestParam("direccion") String direccion) {
-		
-		Optional<Edificio> edificio = edificioService.findByDireccion(direccion);
-		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con ID: " + direccion;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-		}
-
-		return new ResponseEntity<>(edificio.get(), HttpStatus.OK);
-
-	}
 	
-	/*
 	@PostMapping("/add")
-	public ResponseEntity<Edificio> addEdificio(@RequestBody Edificio edificio) {
-
-		edificioService.save(edificio);
-		return new ResponseEntity<Edificio>(edificio, HttpStatus.CREATED);
+	public ResponseEntity<String> addEdificio(@RequestParam("address") String address) {
+		
+		Optional<Edificio> edificio = edificioService.findByDireccion(address);
+		if (edificio.isPresent()) {
+			String mensaje = "Ya existe un Edificio registrado con ese domicilio";
+			return new ResponseEntity<>(mensaje, HttpStatus.OK);
+		}
+		
+		Edificio building = new Edificio();
+		building.setDireccion(address);
+		edificioService.save(building);
+		return new ResponseEntity<String>("Edificio Creado con Exito", HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/delete")
-	public ResponseEntity<String> deleteEdificio(@RequestParam("id") int edificioId) {
+	public ResponseEntity<String> deleteEdificio(@RequestParam("address") String address) {
 
-		Optional<Edificio> edificio = edificioService.findById(edificioId);
+		Optional<Edificio> edificio = edificioService.findByDireccion(address);
 		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con ID: " + edificioId;
+			String mensaje = "Edificio no encontrado con el domicilio: " + address;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 		
-		edificioService.deleteById(edificioId);
+		edificioService.deleteById(edificio.get().getId());
 		String mensaje = "Edificio eliminado con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
-		
 	}
 	
+	
 	@PostMapping("/addUnidad")
-	public ResponseEntity<String> addPersona(@RequestParam("id") int edificioId, @RequestBody Unidad unidad) {
-        Optional<Edificio> edificioOptional = edificioService.findById(edificioId);
-		if (!edificioOptional.isPresent()) {
-			String mensaje = "Edificio no encontrado con ID: " + edificioId;
+	public ResponseEntity<String> addPersona(@RequestParam("address") String address, @RequestBody Unidad unidad) {
+        Optional<Edificio> edificio = edificioService.findByDireccion(address);
+		if (!edificio.isPresent()) {
+			String mensaje = "Edificio no encontrado con direccion: " + address;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
-        Edificio edificio = edificioOptional.get();
-        edificioService.addUnidad(edificio,unidad);
-        edificioService.save(edificio);
-        String mensaje = "Unidad agregada con exito al edificio";
+		
+        edificioService.addUnidad(edificio.get(),unidad);
+        edificioService.save(edificio.get());
+        String mensaje = "Unidad agregada con exito";
         return new ResponseEntity<>(mensaje, HttpStatus.CREATED);        
 	}
 	
+	//----------------------SIN MODIFICAR----------------------//
+	
+	/*
 	@PostMapping("/delUnidad")
 	public ResponseEntity<String> delUnidad(@RequestParam("ide") int edificioId, @RequestParam("idu") int unidadId) {
 	    Optional<Edificio> edificioOptional = edificioService.findById(edificioId);
@@ -153,7 +161,6 @@ public class EdificioController {
 			String mensaje = "Edificio no encontrado con id: " + id;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
-
 	}
 	*/
 }

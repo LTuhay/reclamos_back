@@ -33,11 +33,15 @@ public class UsuarioController {
 
 	@GetMapping(value = "/all")
 	public List<UserDTO> findAll() {
-		return usuarioService.findAll().stream().map(userMapper).collect(Collectors.toList());
+		return usuarioService
+				.findAll()
+				.stream()
+				.map(userMapper)
+				.collect(Collectors.toList());
 	}
 
 	@GetMapping(value = "/find")
-	public ResponseEntity<?> getUsuario(@RequestParam("user") String username) {
+	public ResponseEntity<?> findUser(@RequestParam("user") String username) {
 
 		Optional<UserDTO> usuario = usuarioService.findByUsername(username).map(userMapper);
 
@@ -49,12 +53,6 @@ public class UsuarioController {
 		return new ResponseEntity<UserDTO>(usuario.get(), HttpStatus.OK);
 
 	}
-
-	/*
-	 * @PostMapping("/add") public ResponseEntity<?> addUsuario(@RequestBody
-	 * RegisterRequest usuario) { usuarioService.save(usuario); return new
-	 * ResponseEntity<>(usuario, HttpStatus.CREATED); }
-	 */
 
 	@PutMapping(value = "/update/{username}")
 	public ResponseEntity<?> updateUsuario(@PathVariable String username, @RequestBody UserDTO updatedUserDTO) {
@@ -76,8 +74,8 @@ public class UsuarioController {
 		}
 
 	}
-	
-	@DeleteMapping("/delete")
+
+	@DeleteMapping(value = "/delete")
 	public ResponseEntity<String> deleteUsuario(@RequestParam("username") String username) {
 
 		Optional<EntityUser> user = usuarioService.findByUsername(username);
@@ -85,8 +83,7 @@ public class UsuarioController {
 			String mensaje = "Usuario no encontrado: " + username;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
-
-		usuarioService.deleteByUsername(username);
+		usuarioService.deleteById(user.get().getId());
 		String mensaje = "Usuario eliminado con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 	}

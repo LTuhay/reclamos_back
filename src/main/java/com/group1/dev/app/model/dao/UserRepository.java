@@ -15,5 +15,4 @@ public interface UserRepository extends JpaRepository<EntityUser, Integer> {
 
 	Optional<EntityUser> findByDni(int dni);
 
-	void deleteByUsername(String username);
 }

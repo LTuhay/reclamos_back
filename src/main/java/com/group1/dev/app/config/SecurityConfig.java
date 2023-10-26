@@ -34,9 +34,10 @@ public class SecurityConfig {
 		new AntPathRequestMatcher("/edificios/**");
 		return http
 				.csrf(csrf -> csrf.disable())
+				.headers(headers -> headers.disable())//BORRAR UNA VEZ QUE SE TERMINE DE UTILIZAR H2
 				.authorizeHttpRequests(
 						authRequest -> authRequest
-						.requestMatchers(PathRequest.toH2Console()).permitAll()
+						.requestMatchers(PathRequest.toH2Console()).anonymous()
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/users/**"))
 						.hasAnyAuthority("Administrador")
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/edificios/**"))
@@ -45,7 +46,9 @@ public class SecurityConfig {
 						.hasAnyAuthority("Administrador")
 						.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE,"/reclamo/**"))
 						.hasAnyAuthority("Administrador")
-						.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/**"))
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/register"))
+						.hasAnyAuthority("Administrador")
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/login"))
 						.anonymous()
 						.anyRequest().authenticated())
 				.sessionManagement(
