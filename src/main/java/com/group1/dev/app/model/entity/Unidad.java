@@ -36,6 +36,10 @@ public class Unidad {
 		
 	}
 
+	public void setPersonas(List<EntityUser> personas) {
+		this.personas = personas;
+	}
+
 	public int getId() {
 		return id;
 	}

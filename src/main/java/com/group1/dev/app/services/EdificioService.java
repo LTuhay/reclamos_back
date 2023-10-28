@@ -63,8 +63,8 @@ public class EdificioService implements IEdificioService {
 	}
 
 	@Override
-	public List<Unidad> findUnidadesByEdificioId(int id) {
-		return edificioRepo.findById(id).get().getUnidades();
+	public List<Unidad> findUnidadesByEdificio(Edificio edificio) {
+		return edificio.getUnidades();
 	}
 
 }

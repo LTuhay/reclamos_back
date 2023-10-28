@@ -22,6 +22,6 @@ public interface IEdificioService {
 	
 	public void delUnidad (Edificio edificio, Unidad unidad);
 	
-	public List<Unidad> findUnidadesByEdificioId(int id); 
+	public List<Unidad> findUnidadesByEdificio(Edificio edificio); 
 
 }

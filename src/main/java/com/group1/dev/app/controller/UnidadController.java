@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.group1.dev.app.model.entity.Edificio;
+import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUnidadService;
 
@@ -51,9 +52,9 @@ public class UnidadController {
 		unidadService.save(unidad);
 		return new ResponseEntity<Unidad>(unidad, HttpStatus.CREATED);
 	}
-	/*
+	/* aca */
 	@PostMapping("/addPersona")
-	public ResponseEntity<String> addPersona(@RequestParam("id") int unidadId, @RequestBody Persona persona) {
+	public ResponseEntity<String> addPersona(@RequestParam("id") int unidadId, @RequestBody EntityUser persona) {
 		Optional<Unidad> unidadOptional = unidadService.findById(unidadId);
 		if (!unidadOptional.isPresent()) {
 			String mensaje = "Unidad no encontrada con ID: " + unidadId;
@@ -75,14 +76,14 @@ public class UnidadController {
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 		Unidad unidad = unidadOptional.get();
-		Optional<Persona> personaOptional = unidad.getPersonas().stream()
+		Optional<EntityUser> personaOptional = unidad.getPersonas().stream()
 				.filter(persona -> persona.getId() == personaId).findFirst();
 		if (!personaOptional.isPresent()) {
 			String mensaje = "Persona no encontrada con ID: " + personaId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-		Persona persona = personaOptional.get();
+		EntityUser persona = personaOptional.get();
 		unidadService.delPersona(unidad, persona);
 		unidadService.save(unidad);
 		String mensaje = "Persona eliminada con éxito de la unidad";
@@ -97,7 +98,7 @@ public class UnidadController {
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 		Unidad unidad = unidadOptional.get();
-		List<Persona> personas = unidadService.findPersonasByUnidadId(unidad);
+		List<EntityUser> personas = unidadService.findPersonasByUnidadId(unidad);
 		if (personas.isEmpty()) {
 			String mensaje = "La unidad no contiene personas: " + unidadId;
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
@@ -141,5 +142,5 @@ public class UnidadController {
 		}
 
 	}
-	*/
+
 }

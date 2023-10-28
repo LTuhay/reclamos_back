@@ -101,9 +101,9 @@ public class EdificioController {
         return new ResponseEntity<>(mensaje, HttpStatus.CREATED);        
 	}
 	
-	//----------------------SIN MODIFICAR----------------------//
+	//----------------------ACA---------------------//
 	
-	/*
+
 	@PostMapping("/delUnidad")
 	public ResponseEntity<String> delUnidad(@RequestParam("ide") int edificioId, @RequestParam("idu") int unidadId) {
 	    Optional<Edificio> edificioOptional = edificioService.findById(edificioId);
@@ -135,7 +135,7 @@ public class EdificioController {
 			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
          Edificio edificio = edificioOptional.get();
-         List<Unidad> unidades = edificioService.findUnidadesByEdificioId(edificio);
+         List<Unidad> unidades = edificioService.findUnidadesByEdificio(edificio);
          if (unidades.isEmpty()) {
         	 String mensaje = "El edificio no contiene unidades: " + edificioId;
         	 return new ResponseEntity<>(mensaje,HttpStatus.NOT_FOUND);
@@ -162,5 +162,5 @@ public class EdificioController {
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 	}
-	*/
+	
 }
