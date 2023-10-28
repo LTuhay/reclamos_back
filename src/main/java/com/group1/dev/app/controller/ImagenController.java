@@ -20,7 +20,7 @@ import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.services.ImagenService;
 
 @RestController
-@RequestMapping("/api/v6/imagen")
+@RequestMapping("/imagen")
 public class ImagenController {
 	@Autowired
 	private ImagenService imagenService;
