@@ -19,30 +19,30 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Reclamos")
-@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Reclamo {
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id_reclamo;
 	private String titulo;
-	
+
 	@ManyToOne
-	@JoinColumn(name="id")
+	@JoinColumn(name = "user_id")
 	private EntityUser user;
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
 	private String actualizacion;
-	
-	@OneToMany(mappedBy="reclamo", cascade = CascadeType.ALL)
+
+	@OneToMany(mappedBy = "reclamo", cascade = CascadeType.ALL)
 	private List<Imagen> fotos = new ArrayList<Imagen>();
-	
+
 	@ManyToOne
-	@JoinColumn(name="edificio_id")
-	
+	@JoinColumn(name = "edificio_id")
+
 	private Edificio edificio;
-	
+
 	public Reclamo() {
 
 	}
@@ -110,16 +110,14 @@ public class Reclamo {
 	public void setFotos(List<Imagen> fotos) {
 		this.fotos = fotos;
 	}
-	
+
 	public Edificio getEdificio() {
 		return edificio;
 	}
-	
+
 	public void setEdificio(Edificio edificio) {
 		this.edificio = edificio;
 	}
-	
-	
 
 	@Override
 	public String toString() {
