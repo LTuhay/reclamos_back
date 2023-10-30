@@ -14,14 +14,16 @@ public class ReclamoMapper implements Function<Reclamo,ReclamoDTO> {
 	public ReclamoDTO apply(Reclamo reclamo) {
 		// TODO Auto-generated method stub
 		return new ReclamoDTO(
+				reclamo.getId(),
 				reclamo.getTitulo(),
-				reclamo.getPersona().getNombre(),
+				reclamo.getUser(),
 				reclamo.getDescripcion(),
-				reclamo.getEstadoReclamo().name(),
-				reclamo.getTipoReclamo().name(),
+				reclamo.getEstadoReclamo(),
+				reclamo.getTipoReclamo(),
 				reclamo.getActualizacion(),
-				reclamo.getEdificio().toString()
+				reclamo.getEdificio()
 				);
 	}
+	
 
 }

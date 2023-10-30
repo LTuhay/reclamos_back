@@ -54,7 +54,7 @@ public class EntityUser implements UserDetails {
 	@JoinColumn(name = "unidad_id")
 	private Unidad unidad;
 	
-	@OneToMany(mappedBy="persona", cascade = CascadeType.ALL)
+	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<Reclamo> reclamos = new ArrayList<Reclamo>();
 
 	@Override

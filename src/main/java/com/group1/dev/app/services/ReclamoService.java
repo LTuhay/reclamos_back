@@ -69,7 +69,7 @@ public class ReclamoService implements IReclamoService {
 		Reclamo reclamo = new Reclamo();
 
 		if (userId != null) {
-			reclamo.setPersona(userService.findById(userId).get());
+			reclamo.setUser(userService.findById(userId).get());
 		}
 		if (buildingId != null) {
 			reclamo.setEdificio(edificioService.findById(buildingId).get());

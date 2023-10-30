@@ -46,6 +46,8 @@ public class SecurityConfig {
 						.hasAnyAuthority("Administrador")
 						.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE,"/reclamo/**"))
 						.hasAnyAuthority("Administrador")
+						.requestMatchers(AntPathRequestMatcher.antMatcher("/reclamo/**"))
+						.hasAnyAuthority("Administrador")
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/register"))
 						.hasAnyAuthority("Administrador")
 						.requestMatchers(AntPathRequestMatcher.antMatcher("/auth/login"))

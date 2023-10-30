@@ -3,6 +3,10 @@ package com.group1.dev.app.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -15,6 +19,7 @@ import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "Reclamos")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class,property = "id")
 public class Reclamo {
 	
 	@Id
@@ -24,7 +29,7 @@ public class Reclamo {
 	
 	@ManyToOne
 	@JoinColumn(name="id")
-	private EntityUser persona;
+	private EntityUser user;
 	private String descripcion;
 	private EstadoReclamo estadoReclamo;
 	private TipoReclamo tipoReclamo;
@@ -35,6 +40,7 @@ public class Reclamo {
 	
 	@ManyToOne
 	@JoinColumn(name="edificio_id")
+	
 	private Edificio edificio;
 	
 	public Reclamo() {
@@ -57,12 +63,12 @@ public class Reclamo {
 		this.titulo = titulo;
 	}
 
-	public EntityUser getPersona() {
-		return persona;
+	public EntityUser getUser() {
+		return user;
 	}
 
-	public void setPersona(EntityUser persona) {
-		this.persona = persona;
+	public void setUser(EntityUser user) {
+		this.user = user;
 	}
 
 	public String getDescripcion() {
@@ -112,10 +118,12 @@ public class Reclamo {
 	public void setEdificio(Edificio edificio) {
 		this.edificio = edificio;
 	}
+	
+	
 
 	@Override
 	public String toString() {
-		return "Reclamo [id=" + id_reclamo + ", titulo=" + titulo + ", persona=" + persona + ", descripcion=" + descripcion
+		return "Reclamo [id=" + id_reclamo + ", titulo=" + titulo + ", user=" + user + ", descripcion=" + descripcion
 				+ ", estadoReclamo=" + estadoReclamo + ", tipoReclamo=" + tipoReclamo + ", actualizacion="
 				+ actualizacion + ", fotos=" + fotos + ", edificio=" + edificio + "]";
 	}
