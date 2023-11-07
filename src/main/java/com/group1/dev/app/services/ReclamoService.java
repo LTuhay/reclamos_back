@@ -1,6 +1,7 @@
 package com.group1.dev.app.services;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,8 +13,17 @@ import com.group1.dev.app.model.entity.EstadoReclamo;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.TipoReclamo;
 
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
+
 @Service
 public class ReclamoService implements IReclamoService {
+	
+	@Autowired
+	private EntityManager entityManager;
 
 	@Autowired
 	private IUserService userService;
@@ -64,7 +74,7 @@ public class ReclamoService implements IReclamoService {
 		reclamoRepo.save(reclamoNew);
 	}
 
-	public ArrayList<Reclamo> filter(Integer userId, Integer buildingId, String state, String type) {
+	public List<Reclamo> filter(Integer userId, Integer buildingId, String state, String type) {
 
 		Reclamo reclamo = new Reclamo();
 
@@ -92,5 +102,32 @@ public class ReclamoService implements IReclamoService {
 		return allReclamos;
 
 	}
+	
+	public List<Reclamo> filter2(Integer userId, Integer buildingId, String state, String type) {
 
+	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+	    CriteriaQuery<Reclamo> criteriaQuery = criteriaBuilder.createQuery(Reclamo.class);
+	    Root<Reclamo> root = criteriaQuery.from(Reclamo.class);
+
+	    Predicate predicate = criteriaBuilder.conjunction();
+
+	    if (userId != null) {
+	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("user").get("id"), userId));
+	    }
+	    if (buildingId != null) {
+	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("edificio").get("id"), buildingId));
+	    }
+	    if (state != null) {
+	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("estadoReclamo"), EstadoReclamo.valueOf(state)));
+	    }
+	    if (type != null) {
+	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("tipoReclamo"), TipoReclamo.valueOf(type)));
+	    }
+
+	    criteriaQuery.where(predicate);
+
+	    return entityManager.createQuery(criteriaQuery).getResultList();
+
+	}
+	
 }

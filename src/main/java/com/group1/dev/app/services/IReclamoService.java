@@ -1,6 +1,7 @@
 package com.group1.dev.app.services;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.group1.dev.app.model.entity.Reclamo;
 
@@ -16,6 +17,6 @@ public interface IReclamoService {
 
 	public void update(Integer id,Reclamo reclamoNew);
 
-	public ArrayList<Reclamo> filter(Integer userId, Integer buildingId, String state, String type);
+	public List<Reclamo> filter(Integer userId, Integer buildingId, String state, String type);
 
 }

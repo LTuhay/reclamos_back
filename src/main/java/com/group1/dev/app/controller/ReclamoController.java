@@ -2,6 +2,7 @@ package com.group1.dev.app.controller;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +27,9 @@ import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.EstadoReclamo;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.TipoReclamo;
+import com.group1.dev.app.services.EdificioService;
 import com.group1.dev.app.services.ReclamoService;
+import com.group1.dev.app.services.UserService;
 import com.group1.dev.app.dto.ReclamoDTO;
 import com.group1.dev.app.exceptions.ReclamoNotFoundException;
 import com.group1.dev.app.mappers.ReclamoMapper;
@@ -40,6 +43,12 @@ public class ReclamoController {
 
 	@Autowired
 	private ReclamoMapper reclamoMapper;
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private EdificioService edificioService;
 
 	@GetMapping("/all")
 	@ResponseBody
@@ -66,8 +75,8 @@ public class ReclamoController {
 		if (reclamos == null || reclamos.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} else {
-			List<ReclamoDTO> reclamosDTO = reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
-			return ResponseEntity.ok(reclamosDTO);
+			///List<ReclamoDTO> reclamosDTO = reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
+			return ResponseEntity.ok(reclamos);
 		}
 	}
 
@@ -97,12 +106,20 @@ public class ReclamoController {
 		System.out.println(reclamoMap);
 
 		Reclamo reclamo = new Reclamo();
-		reclamo.setUser((EntityUser) reclamoMap.get("user"));
+		
+		Optional<EntityUser> optionalUser = userService.findById((int) reclamoMap.get("userid"));
+		EntityUser user = optionalUser.get();
+		
+		Optional<Edificio> optionalEdificio = edificioService.findById((int) reclamoMap.get("edificioid"));
+		
+		Edificio edificio = optionalEdificio.get();
+		
+		reclamo.setUser(user);		
 		reclamo.setTitulo((String) reclamoMap.get("titulo"));
 		reclamo.setDescripcion((String) reclamoMap.get("descripcion"));
 		reclamo.setEstadoReclamo(EstadoReclamo.valueOf((String) reclamoMap.get("estadoReclamo")));
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
-		reclamo.setEdificio((Edificio) reclamoMap.get("edificio"));
+		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
 
 		try {
