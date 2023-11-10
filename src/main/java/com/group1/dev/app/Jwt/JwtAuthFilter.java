@@ -1,6 +1,7 @@
 package com.group1.dev.app.Jwt;
 
 import java.io.IOException;
+import java.util.Enumeration;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,6 +35,7 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 		String jwt;
 		String username;
 
+
 		if (authHeader == null || !authHeader.startsWith("Bearer ")) {
 
 			filterChain.doFilter(request, response);
@@ -42,9 +44,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
 
 		jwt = authHeader.substring(7);
 		username = jwtService.extractClaim(jwt, Claims::getSubject);
+		
 		if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 			UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
+
 			if (jwtService.validateToken(jwt, userDetails)) {
+
+
+
 				UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(
 						userDetails.getUsername(),
 						null,
