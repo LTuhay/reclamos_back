@@ -45,7 +45,7 @@ public class SecurityConfig {
 		new AntPathRequestMatcher("/edificios/**");
 		return http
 				.csrf(csrf -> csrf.disable())
-				//.headers(headers -> headers.disable())//BORRAR UNA VEZ QUE SE TERMINE DE UTILIZAR H2
+				.headers(headers -> headers.disable())//BORRAR UNA VEZ QUE SE TERMINE DE UTILIZAR H2
 				.authorizeHttpRequests(
 						authRequest -> authRequest
 								.requestMatchers(PathRequest.toH2Console()).anonymous()
@@ -78,7 +78,7 @@ public class SecurityConfig {
 
         CorsConfiguration config = new CorsConfiguration();
         config.setAllowedOrigins(Arrays.asList("http://localhost:3000"));
-        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE"));
+        config.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "PATCH"));
         config.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         config.setAllowCredentials(true);
 
