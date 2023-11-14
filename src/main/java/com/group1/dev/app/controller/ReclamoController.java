@@ -70,13 +70,15 @@ public class ReclamoController {
 			@RequestParam(name = "buildingid", required = false) Integer buildingId,
 			@RequestParam(name = "state", required = false) String state,
 			@RequestParam(name = "type", required = false) String type) {
-		List<Reclamo> reclamos = reclamoService.filter(userId, buildingId, state, type);
+		List<Reclamo> reclamos = reclamoService.filter2(userId, buildingId, state, type);
+		List<ReclamoDTO> allreclamos = reclamos.stream().map(reclamoMapper)
+				.collect(Collectors.toList());
 
 		if (reclamos == null || reclamos.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} else {
 			///List<ReclamoDTO> reclamosDTO = reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
-			return ResponseEntity.ok(reclamos);
+			return ResponseEntity.ok(allreclamos);
 		}
 	}
 
@@ -137,15 +139,22 @@ public class ReclamoController {
 	public ResponseEntity<?> actualizarReclamo(@PathVariable Integer id, @RequestBody ReclamoDTO reclamoDTO) {
 
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
+		
+		Optional<EntityUser> optionalUser = userService.findById((int) reclamoMap.get("userid"));
+		EntityUser user = optionalUser.get();
+		
+		Optional<Edificio> optionalEdificio = edificioService.findById((int) reclamoMap.get("edificioid"));
+		
+		Edificio edificio = optionalEdificio.get();
 
 		Reclamo reclamo = new Reclamo();
-		reclamo.setId((Integer) reclamoMap.get("reclamo_id"));
-		reclamo.setUser((EntityUser) reclamoMap.get("user"));
+		reclamo.setId(id);
+		reclamo.setUser(user);
 		reclamo.setTitulo((String) reclamoMap.get("titulo"));
 		reclamo.setDescripcion((String) reclamoMap.get("descripcion"));
 		reclamo.setEstadoReclamo(EstadoReclamo.valueOf((String) reclamoMap.get("estadoReclamo")));
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
-		reclamo.setEdificio((Edificio) reclamoMap.get("edificio"));
+		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
 		try {
 			reclamoService.update(id, reclamo);

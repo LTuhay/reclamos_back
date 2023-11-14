@@ -8,6 +8,11 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -27,7 +32,7 @@ public class EntityUser implements UserDetails {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Integer id;
 
 	@Column(nullable = false)
 	private String nombre;
@@ -53,6 +58,7 @@ public class EntityUser implements UserDetails {
 	@ManyToOne
 	@JoinColumn(name = "unidad_id")
 	private Unidad unidad;
+	
 	
 	@OneToMany(mappedBy="user", cascade = CascadeType.ALL)
 	private List<Reclamo> reclamos = new ArrayList<Reclamo>();

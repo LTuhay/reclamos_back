@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
+import org.springframework.data.domain.ExampleMatcher;
 import org.springframework.stereotype.Service;
 
 import com.group1.dev.app.model.dao.ReclamoRepository;
@@ -18,6 +19,7 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
+
 
 @Service
 public class ReclamoService implements IReclamoService {
@@ -33,6 +35,8 @@ public class ReclamoService implements IReclamoService {
 
 	@Autowired
 	private ReclamoRepository reclamoRepo;
+	
+	
 
 	@Override
 	public ArrayList<Reclamo> findAll() {
@@ -94,9 +98,16 @@ public class ReclamoService implements IReclamoService {
 
 			reclamo.setTipoReclamo(tipo);
 		}
-		Example<Reclamo> example = Example.of(reclamo);
+
+
+		Example<Reclamo> example = Example.of(reclamo,
+			    ExampleMatcher.matching()
+			        .withIgnorePaths("user_id"));
 		System.out.println(example);
-		ArrayList<Reclamo> allReclamos = (ArrayList<Reclamo>) reclamoRepo.findAll(example);
+		
+				
+		
+		List<Reclamo> allReclamos = reclamoRepo.findAll(example);
 
 		System.out.println(allReclamos);
 		return allReclamos;
@@ -104,30 +115,29 @@ public class ReclamoService implements IReclamoService {
 	}
 	
 	public List<Reclamo> filter2(Integer userId, Integer buildingId, String state, String type) {
-
 	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 	    CriteriaQuery<Reclamo> criteriaQuery = criteriaBuilder.createQuery(Reclamo.class);
 	    Root<Reclamo> root = criteriaQuery.from(Reclamo.class);
 
-	    Predicate predicate = criteriaBuilder.conjunction();
+	    List<Predicate> predicates = new ArrayList<>();
 
 	    if (userId != null) {
-	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("user").get("id"), userId));
+	        predicates.add(criteriaBuilder.equal(root.get("user").get("id"), userId));
 	    }
 	    if (buildingId != null) {
-	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("edificio").get("id"), buildingId));
+	        predicates.add(criteriaBuilder.equal(root.get("edificio").get("id"), buildingId));
 	    }
 	    if (state != null) {
-	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("estadoReclamo"), EstadoReclamo.valueOf(state)));
+	        predicates.add(criteriaBuilder.equal(root.get("estadoReclamo"), EstadoReclamo.valueOf(state)));
 	    }
 	    if (type != null) {
-	        predicate = ((CriteriaBuilder) predicate).and(criteriaBuilder.equal(root.get("tipoReclamo"), TipoReclamo.valueOf(type)));
+	        predicates.add(criteriaBuilder.equal(root.get("tipoReclamo"), TipoReclamo.valueOf(type)));
 	    }
 
-	    criteriaQuery.where(predicate);
+	    criteriaQuery.where(predicates.toArray(new Predicate[0]));
 
 	    return entityManager.createQuery(criteriaQuery).getResultList();
-
 	}
+
 	
 }
