@@ -114,6 +114,7 @@ public class ReclamoController {
 		
 		Edificio edificio = optionalEdificio.get();
 		
+		reclamo.setId((Integer) reclamoMap.get("reclamo_id"));
 		reclamo.setUser(user);		
 		reclamo.setTitulo((String) reclamoMap.get("titulo"));
 		reclamo.setDescripcion((String) reclamoMap.get("descripcion"));
@@ -138,6 +139,7 @@ public class ReclamoController {
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
 
 		Reclamo reclamo = new Reclamo();
+		reclamo.setId((Integer) reclamoMap.get("reclamo_id"));
 		reclamo.setUser((EntityUser) reclamoMap.get("user"));
 		reclamo.setTitulo((String) reclamoMap.get("titulo"));
 		reclamo.setDescripcion((String) reclamoMap.get("descripcion"));

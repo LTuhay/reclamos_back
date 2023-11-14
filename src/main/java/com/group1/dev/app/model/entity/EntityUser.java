@@ -41,7 +41,7 @@ public class EntityUser implements UserDetails {
 	@Column(nullable = false)
 	private int edad;
 
-	@Column(nullable = false)
+	@Column(nullable = false, unique = true)
 	private String username;
 
 	@Column(nullable = false)

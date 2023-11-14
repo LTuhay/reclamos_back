@@ -8,6 +8,7 @@ import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -28,10 +29,12 @@ public class Reclamo {
 	private String titulo;
 
 	@ManyToOne
-	@JoinColumn(name = "user_id")
+	@JoinColumn(name = "user_id", nullable = false)
 	private EntityUser user;
 	private String descripcion;
+	@Column(nullable = false)
 	private EstadoReclamo estadoReclamo;
+	@Column(nullable = false)
 	private TipoReclamo tipoReclamo;
 	private String actualizacion;
 
@@ -39,7 +42,7 @@ public class Reclamo {
 	private List<Imagen> fotos = new ArrayList<Imagen>();
 
 	@ManyToOne
-	@JoinColumn(name = "edificio_id")
+	@JoinColumn(name = "edificio_id", nullable = false)
 
 	private Edificio edificio;
 

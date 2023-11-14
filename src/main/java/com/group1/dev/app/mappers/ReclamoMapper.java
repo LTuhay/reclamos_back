@@ -17,6 +17,7 @@ public class ReclamoMapper implements Function<Reclamo, ReclamoDTO> {
     @Override
     public ReclamoDTO apply(Reclamo reclamo) {
         return new ReclamoDTO(
+        		reclamo.getId(),
                 reclamo.getTitulo(),
                 reclamo.getUser().getId(),
                 reclamo.getDescripcion(),
