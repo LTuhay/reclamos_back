@@ -16,23 +16,32 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.group1.dev.app.dto.ReclamoDTO;
 import com.group1.dev.app.model.entity.Imagen;
+import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.services.ImagenService;
+import com.group1.dev.app.services.ReclamoService;
 
 @RestController
 @RequestMapping("/imagen")
 public class ImagenController {
 	@Autowired
 	private ImagenService imagenService;
+	@Autowired
+	private ReclamoService reclamoService;
 
 	@PostMapping("/upload")
 	public ResponseEntity<String> upload(@RequestParam("file") MultipartFile archivo,
 											@RequestParam("nombre") String nombre,
-												@RequestParam("descripcion") String descripcion) {
+												@RequestParam("descripcion") String descripcion,
+												@RequestParam("id_reclamo") Integer id_reclamo
+												) {
 		try {
 			Imagen imagen = new Imagen();
 			imagen.setNombreImagen(nombre);
 			imagen.setDescripcion(descripcion);
+			Reclamo reclamo = reclamoService.findById(id_reclamo);
+			imagen.setReclamo(reclamo);
 			imagen.setDatosImagen(archivo.getBytes());
 			imagenService.save(imagen);
 			return ResponseEntity.ok("Imagen subida exitosamente.");

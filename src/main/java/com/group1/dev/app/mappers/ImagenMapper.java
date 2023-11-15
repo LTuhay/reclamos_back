@@ -14,10 +14,10 @@ public class ImagenMapper implements Function<Imagen,ImagenDTO>{
 	public ImagenDTO apply(Imagen imagen) {
 		// TODO Auto-generated method stub
 		return new ImagenDTO(
+			imagen.getId(),
 				imagen.getNombreImagen(),
 				imagen.getDescripcion(),
-				imagen.getDatosImagen().toString(),
-				imagen.getReclamo().toString()
+				imagen.getDatosImagen()
 				);
 	}
 
