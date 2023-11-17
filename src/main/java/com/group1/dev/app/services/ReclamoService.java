@@ -114,7 +114,7 @@ public class ReclamoService implements IReclamoService {
 
 	}
 	
-	public List<Reclamo> filter2(Integer userId, Integer buildingId, String state, String type) {
+	public List<Reclamo> filter2(Integer userId, Integer buildingId, EstadoReclamo state, TipoReclamo type) {
 	    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
 	    CriteriaQuery<Reclamo> criteriaQuery = criteriaBuilder.createQuery(Reclamo.class);
 	    Root<Reclamo> root = criteriaQuery.from(Reclamo.class);
@@ -128,10 +128,10 @@ public class ReclamoService implements IReclamoService {
 	        predicates.add(criteriaBuilder.equal(root.get("edificio").get("id"), buildingId));
 	    }
 	    if (state != null) {
-	        predicates.add(criteriaBuilder.equal(root.get("estadoReclamo"), EstadoReclamo.valueOf(state)));
+	        predicates.add(criteriaBuilder.equal(root.get("estadoReclamo"), state));
 	    }
 	    if (type != null) {
-	        predicates.add(criteriaBuilder.equal(root.get("tipoReclamo"), TipoReclamo.valueOf(type)));
+	        predicates.add(criteriaBuilder.equal(root.get("tipoReclamo"), type));
 	    }
 
 	    criteriaQuery.where(predicates.toArray(new Predicate[0]));
