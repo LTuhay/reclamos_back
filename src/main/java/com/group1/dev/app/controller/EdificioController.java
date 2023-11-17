@@ -142,10 +142,6 @@ public class EdificioController {
 		}
          Edificio edificio = edificioOptional.get();
          List<Unidad> unidades = edificioService.findUnidadesByEdificio(edificio);
-         if (unidades.isEmpty()) {
-        	 String mensaje = "El edificio no contiene unidades: " + id;
-        	 return new ResponseEntity<>(mensaje,HttpStatus.NOT_FOUND);
-         }
 	    List<UnidadDTO> unidadDTOs = unidades.stream()
 	            .map(unidadMapper::apply)
 	            .collect(Collectors.toList());
