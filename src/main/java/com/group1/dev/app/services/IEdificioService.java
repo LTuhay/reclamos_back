@@ -12,7 +12,7 @@ public interface IEdificioService {
 
 	public Optional<Edificio> findById(int id);
 
-	public void save(Edificio edificio);
+	public Edificio save(Edificio edificio);
 
 	public void deleteById(int id);
 

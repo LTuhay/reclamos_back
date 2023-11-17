@@ -19,6 +19,7 @@ public class EdificioMapper implements Function<Edificio,EdificioDTO> {
 	public EdificioDTO apply(Edificio edificio) {
 		// TODO Auto-generated method stub
 		return new EdificioDTO(
+				edificio.getId(),
 				edificio.getDireccion(),
 				edificio.getUnidades()
 				.stream()
