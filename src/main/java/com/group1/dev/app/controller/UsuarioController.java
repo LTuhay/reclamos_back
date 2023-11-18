@@ -80,12 +80,14 @@ public class UsuarioController {
 	public ResponseEntity<?> updateUsuario(@PathVariable String username, @RequestBody UserDTO updatedUserDTO) {
 		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
 
+
 		if (userExists.isPresent()) {
 			EntityUser updatedUser = userExists.get();
 			updatedUser.setDni(updatedUserDTO.dni());
 			updatedUser.setEdad(updatedUserDTO.edad());
 			updatedUser.setEmail(updatedUserDTO.email());
 			updatedUser.setNombre(updatedUserDTO.nombre());
+			updatedUser.setTipoPersona(updatedUserDTO.tipoPersona());
 
 			usuarioService.save(updatedUser);
 
