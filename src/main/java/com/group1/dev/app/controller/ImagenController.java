@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.group1.dev.app.dto.ReclamoDTO;
 import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.services.ImagenService;
@@ -32,10 +31,8 @@ public class ImagenController {
 
 	@PostMapping("/upload")
 	public ResponseEntity<String> upload(@RequestParam("file") MultipartFile archivo,
-											@RequestParam("nombre") String nombre,
-												@RequestParam("descripcion") String descripcion,
-												@RequestParam("id_reclamo") Integer id_reclamo
-												) {
+			@RequestParam("nombre") String nombre, @RequestParam("descripcion") String descripcion,
+			@RequestParam("id_reclamo") Integer id_reclamo) {
 		try {
 			Imagen imagen = new Imagen();
 			imagen.setNombreImagen(nombre);
@@ -71,15 +68,26 @@ public class ImagenController {
 			return ResponseEntity.notFound().build();
 		}
 	}
-
+	
 	@GetMapping("/findescriptiondbyid/{id}")
-	public String findDescriptionById(@PathVariable int id) {
-		Optional<Imagen> imagen = imagenService.findById(id);
-		if (imagen.isPresent()) {
-			System.out.println(imagen.get().getDescripcion());
-			return imagen.get().getDescripcion();
+    public String findDescriptionById(@PathVariable int id) {
+        Optional<Imagen> imagen = imagenService.findById(id);
+        if (imagen.isPresent()) {
+            System.out.println(imagen.get().getDescripcion());
+            return imagen.get().getDescripcion();
+        } else {
+            return "Imagen no encontrada";
+        }
+    }
+
+	@GetMapping("/findimagesreclamo/{id}")
+	public ResponseEntity<?> findImagesbyReclamoId(@PathVariable int id) {
+		Optional<Reclamo> reclamo = Optional.ofNullable(reclamoService.findById(id));
+		if (reclamo.isPresent()) {
+			return ResponseEntity.ok(reclamo.get().getFotos());
 		} else {
-			return "Imagen no encontrada";
+			String mensaje = "Reclamo inexistente";
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 	}
 }
