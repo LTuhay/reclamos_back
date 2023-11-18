@@ -66,11 +66,23 @@ public class ReclamoController {
 
 	@GetMapping("/filter")
 	@ResponseStatus(HttpStatus.OK)
-	public ResponseEntity<?> filterReclamos(@RequestParam(name = "userid", required = false) Integer userId,
-			@RequestParam(name = "buildingid", required = false) Integer buildingId,
+	public ResponseEntity<?> filterReclamos(@RequestParam(name = "userid", required = false) String userId,
+			@RequestParam(name = "buildingid", required = false) String buildingId,
 			@RequestParam(name = "state", required = false) String state,
 			@RequestParam(name = "type", required = false) String type) {
-		List<Reclamo> reclamos = reclamoService.filter2(userId, buildingId, state, type);
+		
+		
+		 // Convertir cadenas "null" a null
+		  Integer userIdValue = parseInteger(userId);
+		  Integer buildingIdValue = parseInteger(buildingId);
+		  
+		  // Convertir cadena "null" a null para el enum TipoReclamo
+		  TipoReclamo tipoReclamoValue = parseTipoReclamo(type);
+
+		  // Convertir cadena "null" a null para el enum EstadoReclamo
+		  EstadoReclamo estadoReclamoValue = parseEstadoReclamo(state);
+
+		List<Reclamo> reclamos = reclamoService.filter2(userIdValue, buildingIdValue, estadoReclamoValue, tipoReclamoValue);
 		List<ReclamoDTO> allreclamos = reclamos.stream().map(reclamoMapper)
 				.collect(Collectors.toList());
 
@@ -190,6 +202,19 @@ public class ReclamoController {
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public ResponseEntity<String> exceptionHandler() {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
+	}
+	
+	// Métodos de utilidad para convertir cadena "null" a null y luego a Integer, TipoReclamo, EstadoReclamo
+	private Integer parseInteger(String value) {
+	  return (value != null && !value.equals("null")) ? Integer.parseInt(value) : null;
+	}
+
+	private TipoReclamo parseTipoReclamo(String value) {
+	  return (value != null && !value.equals("null")) ? TipoReclamo.valueOf(value) : null;
+	}
+
+	private EstadoReclamo parseEstadoReclamo(String value) {
+	  return (value != null && !value.equals("null")) ? EstadoReclamo.valueOf(value) : null;
 	}
 
 }
