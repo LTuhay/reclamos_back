@@ -34,8 +34,8 @@ public class EdificioService implements IEdificioService {
 	}
 
 	@Override
-	public void save(Edificio edificio) {
-		edificioRepo.save(edificio);
+	public Edificio save(Edificio edificio) {
+		return edificioRepo.save(edificio);
 	}
 
 	@Override

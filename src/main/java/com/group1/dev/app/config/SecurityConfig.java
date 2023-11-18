@@ -42,7 +42,7 @@ public class SecurityConfig {
 	
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		new AntPathRequestMatcher("/edificios/**");
+		//new AntPathRequestMatcher("/edificios/**");
 		return http
 				.csrf(csrf -> csrf.disable())
 				.headers(headers -> headers.disable())//BORRAR UNA VEZ QUE SE TERMINE DE UTILIZAR H2
@@ -53,7 +53,7 @@ public class SecurityConfig {
 								.hasAnyAuthority("Administrador")
 								.requestMatchers(AntPathRequestMatcher.antMatcher("/edificios/**"))
 								.hasAnyAuthority("Administrador")
-								.requestMatchers(AntPathRequestMatcher.antMatcher("/Unidades/**"))
+								.requestMatchers(AntPathRequestMatcher.antMatcher("/unidades/**"))
 								.hasAnyAuthority("Administrador")
 								.requestMatchers(AntPathRequestMatcher.antMatcher(HttpMethod.DELETE, "/reclamo/**"))
 								.hasAnyAuthority("Administrador")
