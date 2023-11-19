@@ -60,7 +60,8 @@ public class UnidadController {
 	public ResponseEntity<?> getUnidad(@RequestParam("id") int unidadId) {
 		Optional<Unidad> optionalUnidad = unidadService.findById(unidadId);
 		if (!optionalUnidad.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			String mensaje = "Unidad no encontrada con ID: " + unidadId;
+			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 		Unidad unidad = optionalUnidad.get();
 		UnidadDTO unidadDTO = unidadMapper.apply(unidad);
@@ -78,10 +79,11 @@ public class UnidadController {
 	        Edificio edificio = optionalEdificio.get();
 	        unidad.setEdificio(edificio);
 	        unidad.setEstado(EstadoUnidad.valueOf(unidadMap.get("estado").toString()));
-	        unidad.setNro((int) unidadMap.get("nro"));
-	        unidad.setPiso((int) unidadMap.get("piso"));	               
-	        unidadService.save(unidad);	               
-	        return new ResponseEntity<>(HttpStatus.CREATED);
+	        unidad.setNro((String) unidadMap.get("nro"));
+	        unidad.setPiso((String) unidadMap.get("piso"));	               
+	        unidadService.save(unidad);	       
+       
+	        return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.CREATED);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la unidad.");
@@ -161,11 +163,13 @@ public class UnidadController {
 
 		Optional<Unidad> unidad = unidadService.findById(unidadId);
 		if (!unidad.isPresent()) {
-			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+			String mensaje = "Unidad no encontrada con ID: " + unidadId;
+			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
 		unidadService.deleteById(unidadId);
-		return new ResponseEntity<>(HttpStatus.OK);
+		String mensaje = "Unidad eliminada con exito";
+		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 
 	}
 
@@ -177,12 +181,13 @@ public class UnidadController {
 			Unidad unidad = unidadOptional.get();
 	        Map<String, Object> unidadMap = unidadUpdateDTO.toMap();
 	        unidad.setEstado(EstadoUnidad.valueOf(unidadMap.get("estado").toString()));
-	        unidad.setNro((int) unidadMap.get("nro"));
-	        unidad.setPiso((int) unidadMap.get("piso"));	        
+	        unidad.setNro((String) unidadMap.get("nro"));
+	        unidad.setPiso((String) unidadMap.get("piso"));	        
 			unidadService.save(unidad);
-	 		return new ResponseEntity<>(HttpStatus.OK);
+			return ResponseEntity.ok(unidad);
 		} else {
-			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
+			String mensaje = "Unidad no encontrada con id: " + id;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 	    } catch (Exception e) {
 	        e.printStackTrace();
