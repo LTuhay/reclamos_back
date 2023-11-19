@@ -60,8 +60,7 @@ public class UnidadController {
 	public ResponseEntity<?> getUnidad(@RequestParam("id") int unidadId) {
 		Optional<Unidad> optionalUnidad = unidadService.findById(unidadId);
 		if (!optionalUnidad.isPresent()) {
-			String mensaje = "Unidad no encontrada con ID: " + unidadId;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		Unidad unidad = optionalUnidad.get();
 		UnidadDTO unidadDTO = unidadMapper.apply(unidad);
@@ -82,7 +81,7 @@ public class UnidadController {
 	        unidad.setNro((int) unidadMap.get("nro"));
 	        unidad.setPiso((int) unidadMap.get("piso"));	               
 	        unidadService.save(unidad);	               
-	        return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.CREATED);
+	        return new ResponseEntity<>(HttpStatus.CREATED);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la unidad.");
@@ -162,13 +161,11 @@ public class UnidadController {
 
 		Optional<Unidad> unidad = unidadService.findById(unidadId);
 		if (!unidad.isPresent()) {
-			String mensaje = "Unidad no encontrada con ID: " + unidadId;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 
 		unidadService.deleteById(unidadId);
-		String mensaje = "Unidad eliminada con exito";
-		return new ResponseEntity<>(mensaje, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 
@@ -183,10 +180,9 @@ public class UnidadController {
 	        unidad.setNro((int) unidadMap.get("nro"));
 	        unidad.setPiso((int) unidadMap.get("piso"));	        
 			unidadService.save(unidad);
-			return ResponseEntity.ok(unidad);
+	 		return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			String mensaje = "Unidad no encontrada con id: " + id;
-			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	    } catch (Exception e) {
 	        e.printStackTrace();
