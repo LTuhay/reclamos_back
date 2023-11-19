@@ -19,9 +19,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group1.dev.app.dto.UnidadDTO;
 import com.group1.dev.app.dto.UserDTO;
+import com.group1.dev.app.mappers.UnidadMapper;
 import com.group1.dev.app.mappers.UserMapper;
 import com.group1.dev.app.model.entity.EntityUser;
+import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUserService;
 
 @CrossOrigin(origins = "http://localhost:3000" )
@@ -34,6 +37,9 @@ public class UsuarioController {
 
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private UnidadMapper unidadMapper;
 	
 
 	@GetMapping(value = "/all")
@@ -110,5 +116,22 @@ public class UsuarioController {
 		usuarioService.deleteById(user.get().getId());
 		String mensaje = "Usuario eliminado con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
+	}
+
+		@GetMapping(value = "/unidad")
+	public ResponseEntity<?> findUnidadByUsername(@RequestParam("user") String username) {
+
+		Optional<EntityUser> usuario = usuarioService.findByUsername(username);
+
+		if (!usuario.isPresent()) {
+			String mensaje = "Usuario no encontrado: " + username;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+		Unidad unidad = usuario.get().getUnidad();
+		UnidadDTO unidadDTO = unidadMapper.apply(unidad);
+
+		return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.OK);
+
 	}
 }
