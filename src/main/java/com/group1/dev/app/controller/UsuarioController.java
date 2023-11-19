@@ -26,6 +26,7 @@ import com.group1.dev.app.mappers.UserMapper;
 import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUserService;
+import com.group1.dev.app.services.UnidadService;
 
 @CrossOrigin(origins = "http://localhost:3000" )
 @RestController
@@ -34,6 +35,9 @@ public class UsuarioController {
 
 	@Autowired
 	private IUserService usuarioService;
+
+		@Autowired
+	private UnidadService unidadService;
 
 	@Autowired
 	private UserMapper userMapper;
@@ -86,7 +90,6 @@ public class UsuarioController {
 	public ResponseEntity<?> updateUsuario(@PathVariable String username, @RequestBody UserDTO updatedUserDTO) {
 		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
 
-
 		if (userExists.isPresent()) {
 			EntityUser updatedUser = userExists.get();
 			updatedUser.setDni(updatedUserDTO.dni());
@@ -100,6 +103,27 @@ public class UsuarioController {
 			return ResponseEntity.ok("Usuario Creado");
 		} else {
 			String mensaje = "Usuario no encontrado: " + username;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+	@PutMapping(value = "/updateUnidad")
+	public ResponseEntity<?> updateUsuarioUnidad(@RequestParam String username, @RequestParam Integer id_unidad) {
+		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
+		Optional<Unidad> unidadExists = unidadService.findById(id_unidad);
+
+
+		if (userExists.isPresent() && unidadExists.isPresent()) {
+			EntityUser updatedUser = userExists.get();
+			Unidad updatedUnidad = unidadExists.get();
+			updatedUser.setUnidad(updatedUnidad);
+
+			usuarioService.save(updatedUser);
+
+			return ResponseEntity.ok("Usuario actualizado");
+		} else {
+			String mensaje = "Usuario o unidad no encontrado: " + username + " " + id_unidad;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
