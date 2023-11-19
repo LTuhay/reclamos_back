@@ -50,16 +50,12 @@ public class EdificioController {
 	}
 	
 	@GetMapping(value = "/find")
-	public ResponseEntity<?> getEdificio(@RequestParam("address") String address) {
-		
+	public ResponseEntity<?> getEdificio(@RequestParam("address") String address) {		
 		Optional<EdificioDTO> edificio = edificioService.findByDireccion(address).map(edificioMapper);
 		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con el domicilio: " + address;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
-
 		return new ResponseEntity<>(edificio.get(), HttpStatus.OK);
-
 	}
 	
 	
@@ -68,8 +64,7 @@ public class EdificioController {
 	    String address = requestBody.get("direccion");
 		Optional<Edificio> edificio = edificioService.findByDireccion(address);
 		if (edificio.isPresent()) {
-			String mensaje = "Ya existe un Edificio registrado con ese domicilio";
-			return new ResponseEntity<>(mensaje, HttpStatus.OK);
+			return new ResponseEntity<>(HttpStatus.CONFLICT);
 		}
 		
 		Edificio building = new Edificio();
@@ -83,13 +78,11 @@ public class EdificioController {
 
 		Optional<Edificio> edificio = edificioService.findByDireccion(address);
 		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con el domicilio: " + address;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
 		edificioService.deleteById(edificio.get().getId());
-		String mensaje = "Edificio eliminado con exito";
-		return new ResponseEntity<>(mensaje, HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 	
 	
@@ -97,14 +90,12 @@ public class EdificioController {
 	public ResponseEntity<String> addUnidad(@RequestParam("address") String address, @RequestBody Unidad unidad) {
         Optional<Edificio> edificio = edificioService.findByDireccion(address);
 		if (!edificio.isPresent()) {
-			String mensaje = "Edificio no encontrado con direccion: " + address;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
 		
         edificioService.addUnidad(edificio.get(),unidad);
         edificioService.save(edificio.get());
-        String mensaje = "Unidad agregada con exito";
-        return new ResponseEntity<>(mensaje, HttpStatus.CREATED);        
+        return new ResponseEntity<>(HttpStatus.CREATED);        
 	}
 	
 	//----------------------ACA---------------------//
@@ -114,22 +105,19 @@ public class EdificioController {
 	public ResponseEntity<String> delUnidad(@RequestParam("ide") int edificioId, @RequestParam("idu") int unidadId) {
 	    Optional<Edificio> edificioOptional = edificioService.findById(edificioId);
 	    if (!edificioOptional.isPresent()) {
-	        String mensaje = "Edificio no encontrado con ID: " + edificioId;
-	        return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
 	    Edificio edificio = edificioOptional.get();
 	    Optional<Unidad> unidadOptional = edificio.getUnidades().stream()
 	            .filter(unidad -> unidad.getId() == unidadId)
 	            .findFirst();
 	    if (!unidadOptional.isPresent()) {
-	        String mensaje = "Unidad no encontrada con ID: " + unidadId;
-	        return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+	        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 	    }
 	    Unidad unidad = unidadOptional.get();
 	    edificioService.delUnidad(edificio, unidad);
 	    edificioService.save(edificio);
-	    String mensaje = "Unidad eliminada con éxito del edificio";
-	    return new ResponseEntity<>(mensaje, HttpStatus.OK);
+	    return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 	
@@ -137,8 +125,7 @@ public class EdificioController {
     public ResponseEntity<?> findUnidadesbyEdificioId(@RequestParam("id") int id) {
         Optional<Edificio> edificioOptional = edificioService.findById(id);
 		if (!edificioOptional.isPresent()) {
-			String mensaje = "Edificio no encontrado con ID: " + id;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
 		}
          Edificio edificio = edificioOptional.get();
          List<Unidad> unidades = edificioService.findUnidadesByEdificio(edificio);
@@ -158,10 +145,9 @@ public class EdificioController {
 			Edificio edificio = edificioOptional.get();			
 			edificio.setDireccion(address);
 	        edificioService.save(edificio);
-			return ResponseEntity.ok(edificio);
+	 		return new ResponseEntity<>(HttpStatus.OK);
 		} else {
-			String mensaje = "Edificio no encontrado con id: " + id;
-			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+			return new ResponseEntity<String>(HttpStatus.NOT_FOUND);
 		}
 	}
 	

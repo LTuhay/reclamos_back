@@ -71,7 +71,6 @@ public class UnidadController {
 
 	@PostMapping("/add")
 	public ResponseEntity<?> addUnidad(@RequestBody UnidadDTO unidadDTO) {		
-	    System.out.println("Entro al método");
 	    try {
 	        Map<String, Object> unidadMap = unidadDTO.toMap();
 	        System.out.println(unidadMap);
@@ -80,16 +79,11 @@ public class UnidadController {
 	        Edificio edificio = optionalEdificio.get();
 	        unidad.setEdificio(edificio);
 	        unidad.setEstado(EstadoUnidad.valueOf(unidadMap.get("estado").toString()));
-	        unidad.setNro((int) unidadMap.get("nro"));
-	        unidad.setPiso((int) unidadMap.get("piso"));
-	        
-	        System.out.println("Unidad a guardar: " + unidad);
-	        
-	        unidadService.save(unidad);
-	        
-	        System.out.println("Unidad guardada correctamente.");
-	        
-	        return new ResponseEntity<Unidad>(unidad, HttpStatus.CREATED);
+	        unidad.setNro((String) unidadMap.get("nro"));
+	        unidad.setPiso((String) unidadMap.get("piso"));	               
+	        unidadService.save(unidad);	       
+       
+	        return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.CREATED);
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear la unidad.");
@@ -187,8 +181,8 @@ public class UnidadController {
 			Unidad unidad = unidadOptional.get();
 	        Map<String, Object> unidadMap = unidadUpdateDTO.toMap();
 	        unidad.setEstado(EstadoUnidad.valueOf(unidadMap.get("estado").toString()));
-	        unidad.setNro((int) unidadMap.get("nro"));
-	        unidad.setPiso((int) unidadMap.get("piso"));	        
+	        unidad.setNro((String) unidadMap.get("nro"));
+	        unidad.setPiso((String) unidadMap.get("piso"));	        
 			unidadService.save(unidad);
 			return ResponseEntity.ok(unidad);
 		} else {

@@ -21,7 +21,9 @@ public class JwtService {
 	private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
 	public String generateJWT(UserDetails userDetails) {
-		return Jwts.builder().setSubject(userDetails.getUsername()).setIssuedAt(new Date())
+		return Jwts.builder().setSubject(userDetails.getUsername())
+				.claim("role", userDetails.getAuthorities())
+				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MIN * 60 * 1000))
 				.signWith(secretKey, SignatureAlgorithm.HS256).compact();
 	}

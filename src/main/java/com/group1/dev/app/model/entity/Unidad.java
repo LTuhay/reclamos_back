@@ -20,8 +20,8 @@ public class Unidad {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-    private int nro;
-    private int piso;
+    private String nro;
+    private String piso;
     private EstadoUnidad estado;
     
     @OneToMany(mappedBy = "unidad", cascade = CascadeType.ALL)
@@ -48,19 +48,19 @@ public class Unidad {
 		this.id = id;
 	}
 
-	public int getNro() {
+	public String getNro() {
 		return nro;
 	}
 
-	public void setNro(int nro) {
+	public void setNro(String nro) {
 		this.nro = nro;
 	}
 
-	public int getPiso() {
+	public String getPiso() {
 		return piso;
 	}
 
-	public void setPiso(int piso) {
+	public void setPiso(String piso) {
 		this.piso = piso;
 	}
 

@@ -7,8 +7,8 @@ import com.group1.dev.app.model.entity.EntityUser;
 
 public record UnidadUpdateDTO(
 		
-		Integer nro,
-	    Integer piso,
+		String nro,
+	    String piso,
 	    String estado
 		
 		) {
