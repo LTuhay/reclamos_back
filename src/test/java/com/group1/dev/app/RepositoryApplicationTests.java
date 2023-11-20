@@ -44,7 +44,7 @@ class RepositoryApplicationTests {
 	public void should_store_a_Unidad() {
 				
 		Unidad unidad = new Unidad();
-		unidad.setNro(5);unidad.setPiso(1);unidad.setEstado(EstadoUnidad.HabitadaPorDuenio);
+		unidad.setNro("5");unidad.setPiso("1");unidad.setEstado(EstadoUnidad.HabitadaPorDuenio);
 		Unidad unidadPersistida = unidadRepo.save(unidad);
 				
 		assertThat(unidadPersistida).hasFieldOrPropertyWithValue("piso", 1);
