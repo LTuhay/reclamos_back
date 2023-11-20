@@ -25,8 +25,7 @@ public class ReclamoMapper implements Function<Reclamo, ReclamoDTO> {
                 reclamo.getEstadoReclamo(),
                 reclamo.getTipoReclamo(),
                 reclamo.getActualizacion(),
-                reclamo.getEdificio().getId(),
-                reclamo.getFotos().stream().map(imagenMapper).collect(Collectors.toList())
+                reclamo.getEdificio().getId()
         );
     }
 

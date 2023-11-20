@@ -1,6 +1,8 @@
 package com.group1.dev.app.controller;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +18,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
+import com.group1.dev.app.dto.ImagenDTO;
+import com.group1.dev.app.mappers.ImagenMapper;
 import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.services.ImagenService;
@@ -26,6 +30,10 @@ import com.group1.dev.app.services.ReclamoService;
 public class ImagenController {
 	@Autowired
 	private ImagenService imagenService;
+	
+	@Autowired
+	private ImagenMapper imagenMapper;
+	
 	@Autowired
 	private ReclamoService reclamoService;
 
@@ -83,8 +91,14 @@ public class ImagenController {
 	@GetMapping("/findimagesreclamo/{id}")
 	public ResponseEntity<?> findImagesbyReclamoId(@PathVariable int id) {
 		Optional<Reclamo> reclamo = Optional.ofNullable(reclamoService.findById(id));
+		
 		if (reclamo.isPresent()) {
-			return ResponseEntity.ok(reclamo.get().getFotos());
+			ArrayList<ImagenDTO> imagenes =  new ArrayList<>();
+			for (Imagen imagen : reclamo.get().getFotos()) {
+				ImagenDTO imagenDTO = imagenMapper.apply(imagen);
+				imagenes.add(imagenDTO);
+			}
+			return ResponseEntity.ok(imagenes);
 		} else {
 			String mensaje = "Reclamo inexistente";
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);

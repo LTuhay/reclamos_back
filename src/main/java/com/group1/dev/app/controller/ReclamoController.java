@@ -25,13 +25,16 @@ import org.springframework.web.bind.annotation.RestController;
 import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.EstadoReclamo;
+import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.TipoReclamo;
 import com.group1.dev.app.services.EdificioService;
 import com.group1.dev.app.services.ReclamoService;
 import com.group1.dev.app.services.UserService;
+import com.group1.dev.app.dto.ImagenDTO;
 import com.group1.dev.app.dto.ReclamoDTO;
 import com.group1.dev.app.exceptions.ReclamoNotFoundException;
+import com.group1.dev.app.mappers.ImagenMapper;
 import com.group1.dev.app.mappers.ReclamoMapper;
 
 @RestController
@@ -43,6 +46,9 @@ public class ReclamoController {
 
 	@Autowired
 	private ReclamoMapper reclamoMapper;
+	
+	@Autowired
+	private ImagenMapper imagenMapper;
 	
 	@Autowired
 	private UserService userService;
@@ -120,6 +126,8 @@ public class ReclamoController {
 		System.out.println(reclamoMap);
 
 		Reclamo reclamo = new Reclamo();
+	
+		
 		
 		Optional<EntityUser> optionalUser = userService.findById((int) reclamoMap.get("userid"));
 		EntityUser user = optionalUser.get();
@@ -136,10 +144,11 @@ public class ReclamoController {
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
 		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
+		
+
 
 		try {
 			reclamoService.save(reclamo);
-
 			return ResponseEntity.ok().body("Reclamo creado exitosamente");
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -149,6 +158,8 @@ public class ReclamoController {
 
 	@PatchMapping("/patch/{id}")
 	public ResponseEntity<?> actualizarReclamo(@PathVariable Integer id, @RequestBody ReclamoDTO reclamoDTO) {
+		
+	
 
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
 		
@@ -168,6 +179,7 @@ public class ReclamoController {
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
 		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
+	
 		try {
 			reclamoService.update(id, reclamo);
 			return ResponseEntity.ok("Reclamo actualizado exitosamente");

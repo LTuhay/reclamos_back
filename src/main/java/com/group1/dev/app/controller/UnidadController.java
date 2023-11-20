@@ -148,10 +148,6 @@ public class UnidadController {
 		}
 		Unidad unidad = unidadOptional.get();
 		List<EntityUser> personas = unidadService.findPersonasByUnidadId(unidad);
-		if (personas.isEmpty()) {
-			String mensaje = "La unidad no contiene personas: " + unidadId;
-			return new ResponseEntity<>(mensaje, HttpStatus.NOT_FOUND);
-		}
 	    List<UserDTO> userDTOs = personas.stream()
 	            .map(userMapper::apply)
 	            .collect(Collectors.toList());
