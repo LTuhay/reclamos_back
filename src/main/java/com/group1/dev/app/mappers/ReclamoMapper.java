@@ -1,8 +1,6 @@
 package com.group1.dev.app.mappers;
 
 import java.util.function.Function;
-import java.util.stream.Collector;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,8 +24,7 @@ public class ReclamoMapper implements Function<Reclamo, ReclamoDTO> {
                 reclamo.getEstadoReclamo(),
                 reclamo.getTipoReclamo(),
                 reclamo.getActualizacion(),
-                reclamo.getEdificio().getId(),
-                reclamo.getFotos().stream().map(imagenMapper).collect(Collectors.toList())
+                reclamo.getEdificio().getId()
         );
     }
 
