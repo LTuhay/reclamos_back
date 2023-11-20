@@ -5,7 +5,8 @@ import java.util.Map;
 import com.group1.dev.app.model.entity.TipoPersona;
 
 public record UserDTO (
-	
+		
+	Integer id,
 	String nombre,
 	String email,
 	Integer dni,
@@ -18,6 +19,7 @@ public record UserDTO (
 	
 	public Map<String, Object> toMap() {
 	    return Map.ofEntries(
+	      Map.entry("id", id),
 	      Map.entry("nombre", nombre),
 	      Map.entry("email", email),
 	      Map.entry("dni", dni),

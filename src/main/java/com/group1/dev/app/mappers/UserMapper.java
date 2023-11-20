@@ -14,6 +14,7 @@ public class UserMapper implements Function<EntityUser, UserDTO> {
 	public UserDTO apply(EntityUser user) {
 
 		return new UserDTO(
+				user.getId(),
 				user.getNombre(),
 				user.getEmail(),
 				user.getDni(),
