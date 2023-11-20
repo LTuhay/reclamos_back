@@ -1,7 +1,6 @@
 package com.group1.dev.app.controller;
 
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -19,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.group1.dev.app.dto.UnidadDTO;
 import com.group1.dev.app.dto.UserDTO;
+import com.group1.dev.app.mappers.UnidadMapper;
 import com.group1.dev.app.mappers.UserMapper;
 import com.group1.dev.app.model.entity.EntityUser;
+import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUserService;
+import com.group1.dev.app.services.UnidadService;
 
 @CrossOrigin(origins = "http://localhost:3000" )
 @RestController
@@ -32,8 +35,14 @@ public class UsuarioController {
 	@Autowired
 	private IUserService usuarioService;
 
+		@Autowired
+	private UnidadService unidadService;
+
 	@Autowired
 	private UserMapper userMapper;
+
+	@Autowired
+	private UnidadMapper unidadMapper;
 	
 
 	@GetMapping(value = "/all")
@@ -80,7 +89,6 @@ public class UsuarioController {
 	public ResponseEntity<?> updateUsuario(@PathVariable String username, @RequestBody UserDTO updatedUserDTO) {
 		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
 
-
 		if (userExists.isPresent()) {
 			EntityUser updatedUser = userExists.get();
 			updatedUser.setDni(updatedUserDTO.dni());
@@ -99,6 +107,27 @@ public class UsuarioController {
 
 	}
 
+	@PutMapping(value = "/updateUnidad")
+	public ResponseEntity<?> updateUsuarioUnidad(@RequestParam String username, @RequestParam Integer id_unidad) {
+		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
+		Optional<Unidad> unidadExists = unidadService.findById(id_unidad);
+
+
+		if (userExists.isPresent() && unidadExists.isPresent()) {
+			EntityUser updatedUser = userExists.get();
+			Unidad updatedUnidad = unidadExists.get();
+			updatedUser.setUnidad(updatedUnidad);
+
+			usuarioService.save(updatedUser);
+
+			return ResponseEntity.ok("Usuario actualizado");
+		} else {
+			String mensaje = "Usuario o unidad no encontrado: " + username + " " + id_unidad;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+	}
+
 	@DeleteMapping(value = "/delete")
 	public ResponseEntity<String> deleteUsuario(@RequestParam("username") String username) {
 
@@ -110,5 +139,22 @@ public class UsuarioController {
 		usuarioService.deleteById(user.get().getId());
 		String mensaje = "Usuario eliminado con exito";
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
+	}
+
+		@GetMapping(value = "/unidad")
+	public ResponseEntity<?> findUnidadByUsername(@RequestParam("user") String username) {
+
+		Optional<EntityUser> usuario = usuarioService.findByUsername(username);
+
+		if (!usuario.isPresent()) {
+			String mensaje = "Usuario no encontrado: " + username;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+		Unidad unidad = usuario.get().getUnidad();
+		UnidadDTO unidadDTO = unidadMapper.apply(unidad);
+
+		return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.OK);
+
 	}
 }

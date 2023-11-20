@@ -8,8 +8,8 @@ import com.group1.dev.app.model.entity.EntityUser;
 public record UnidadDTO(
 		
 		int id,
-		Integer nro,
-	    Integer piso,
+		String nro,
+	    String piso,
 	    String estado,
 	    Integer edificioID,
 		List<UserDTO> personas
