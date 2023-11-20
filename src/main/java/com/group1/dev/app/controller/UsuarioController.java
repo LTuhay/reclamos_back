@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import org.modelmapper.internal.bytebuddy.implementation.bytecode.Throw;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,8 @@ import com.group1.dev.app.dto.UserDTO;
 import com.group1.dev.app.mappers.UnidadMapper;
 import com.group1.dev.app.mappers.UserMapper;
 import com.group1.dev.app.model.entity.EntityUser;
+import com.group1.dev.app.model.entity.EstadoUnidad;
+import com.group1.dev.app.model.entity.TipoPersona;
 import com.group1.dev.app.model.entity.Unidad;
 import com.group1.dev.app.services.IUserService;
 import com.group1.dev.app.services.UnidadService;
@@ -116,8 +119,18 @@ public class UsuarioController {
 		if (userExists.isPresent() && unidadExists.isPresent()) {
 			EntityUser updatedUser = userExists.get();
 			Unidad updatedUnidad = unidadExists.get();
-			updatedUser.setUnidad(updatedUnidad);
+			
 
+			if(updatedUser.getTipoPersona() == TipoPersona.Inquilino){
+				updatedUnidad.setEstado(EstadoUnidad.Alquilada);
+			} else if (updatedUser.getTipoPersona() == TipoPersona.Propietario) {
+				updatedUnidad.setEstado(EstadoUnidad.HabitadaPorDuenio);
+			} else {
+				String mensaje = "No se pueden asignar unidades a Administradores";
+				return new ResponseEntity<String>(mensaje, HttpStatus.NOT_ACCEPTABLE);
+			}
+
+			updatedUser.setUnidad(updatedUnidad);
 			usuarioService.save(updatedUser);
 
 			return ResponseEntity.ok("Usuario actualizado");
