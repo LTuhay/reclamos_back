@@ -178,7 +178,7 @@ public class UsuarioController {
 		return new ResponseEntity<>(mensaje, HttpStatus.OK);
 	}
 
-		@GetMapping(value = "/unidad")
+	@GetMapping(value = "/unidad")
 	public ResponseEntity<?> findUnidadByUsername(@RequestParam("user") String username) {
 
 		Optional<EntityUser> usuario = usuarioService.findByUsername(username);
@@ -186,17 +186,18 @@ public class UsuarioController {
 		if (!usuario.isPresent()) {
 			String mensaje = "Usuario no encontrado: " + username;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
-		} else if (usuario.get().getUnidad() != null) {
-			Unidad unidad = usuario.get().getUnidad();
+		}
+		
+			
+		Unidad unidad = usuario.get().getUnidad();
+
+		if (unidad != null) {
 			UnidadDTO unidadDTO = unidadMapper.apply(unidad);
 			return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.OK);
-		} else {
-			String mensaje = "Usuario no posee unidad";
-			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
-		}
 
+		}
 		
-		
+		return new ResponseEntity<String>("unidad no encontrada", HttpStatus.NOT_FOUND);
 
 	}
 }
