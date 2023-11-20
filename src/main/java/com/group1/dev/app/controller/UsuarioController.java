@@ -115,13 +115,11 @@ public class UsuarioController {
 		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
 		Optional<Unidad> unidadExists = unidadService.findById(id_unidad);
 
-
 		if (userExists.isPresent() && unidadExists.isPresent()) {
 			EntityUser updatedUser = userExists.get();
 			Unidad updatedUnidad = unidadExists.get();
-			
 
-			if(updatedUser.getTipoPersona() == TipoPersona.Inquilino){
+			if (updatedUser.getTipoPersona() == TipoPersona.Inquilino) {
 				updatedUnidad.setEstado(EstadoUnidad.Alquilada);
 			} else if (updatedUser.getTipoPersona() == TipoPersona.Propietario) {
 				updatedUnidad.setEstado(EstadoUnidad.HabitadaPorDuenio);
@@ -136,6 +134,32 @@ public class UsuarioController {
 			return ResponseEntity.ok("Usuario actualizado");
 		} else {
 			String mensaje = "Usuario o unidad no encontrado: " + username + " " + id_unidad;
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		}
+
+	}
+
+		@PutMapping(value = "/removeUnidad")
+	public ResponseEntity<?> removeUsuarioUnidad(@RequestParam String username) {
+		Optional<EntityUser> userExists = usuarioService.findByUsername(username);
+		Optional<Unidad> unidadExists = unidadService.findById(userExists.get().getUnidad().getId());
+
+
+		if (userExists.isPresent() && unidadExists.isPresent()) {
+			EntityUser updatedUser = userExists.get();
+			Unidad updatedUnidad = unidadExists.get();
+			
+
+			if(updatedUnidad.getPersonas().size() == 1 ){
+				updatedUnidad.setEstado(EstadoUnidad.Inhabitada);
+			}
+
+			updatedUser.setUnidad(null);
+			usuarioService.save(updatedUser);
+
+			return ResponseEntity.ok("Usuario actualizado");
+		} else {
+			String mensaje = "Usuario o unidad no encontrado: " + username;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
@@ -162,12 +186,17 @@ public class UsuarioController {
 		if (!usuario.isPresent()) {
 			String mensaje = "Usuario no encontrado: " + username;
 			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
+		} else if (usuario.get().getUnidad() != null) {
+			Unidad unidad = usuario.get().getUnidad();
+			UnidadDTO unidadDTO = unidadMapper.apply(unidad);
+			return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.OK);
+		} else {
+			String mensaje = "Usuario no posee unidad";
+			return new ResponseEntity<String>(mensaje, HttpStatus.NOT_FOUND);
 		}
 
-		Unidad unidad = usuario.get().getUnidad();
-		UnidadDTO unidadDTO = unidadMapper.apply(unidad);
-
-		return new ResponseEntity<UnidadDTO>(unidadDTO, HttpStatus.OK);
+		
+		
 
 	}
 }
