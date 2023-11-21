@@ -25,16 +25,13 @@ import org.springframework.web.bind.annotation.RestController;
 import com.group1.dev.app.model.entity.Edificio;
 import com.group1.dev.app.model.entity.EntityUser;
 import com.group1.dev.app.model.entity.EstadoReclamo;
-import com.group1.dev.app.model.entity.Imagen;
 import com.group1.dev.app.model.entity.Reclamo;
 import com.group1.dev.app.model.entity.TipoReclamo;
 import com.group1.dev.app.services.EdificioService;
 import com.group1.dev.app.services.ReclamoService;
 import com.group1.dev.app.services.UserService;
-import com.group1.dev.app.dto.ImagenDTO;
 import com.group1.dev.app.dto.ReclamoDTO;
 import com.group1.dev.app.exceptions.ReclamoNotFoundException;
-import com.group1.dev.app.mappers.ImagenMapper;
 import com.group1.dev.app.mappers.ReclamoMapper;
 
 @RestController
@@ -46,13 +43,10 @@ public class ReclamoController {
 
 	@Autowired
 	private ReclamoMapper reclamoMapper;
-	
-	@Autowired
-	private ImagenMapper imagenMapper;
-	
+
 	@Autowired
 	private UserService userService;
-	
+
 	@Autowired
 	private EdificioService edificioService;
 
@@ -76,26 +70,26 @@ public class ReclamoController {
 			@RequestParam(name = "buildingid", required = false) String buildingId,
 			@RequestParam(name = "state", required = false) String state,
 			@RequestParam(name = "type", required = false) String type) {
-		
-		
-		 // Convertir cadenas "null" a null
-		  Integer userIdValue = parseInteger(userId);
-		  Integer buildingIdValue = parseInteger(buildingId);
-		  
-		  // Convertir cadena "null" a null para el enum TipoReclamo
-		  TipoReclamo tipoReclamoValue = parseTipoReclamo(type);
 
-		  // Convertir cadena "null" a null para el enum EstadoReclamo
-		  EstadoReclamo estadoReclamoValue = parseEstadoReclamo(state);
+		// Convertir cadenas "null" a null
+		Integer userIdValue = parseInteger(userId);
+		Integer buildingIdValue = parseInteger(buildingId);
 
-		List<Reclamo> reclamos = reclamoService.filter2(userIdValue, buildingIdValue, estadoReclamoValue, tipoReclamoValue);
-		List<ReclamoDTO> allreclamos = reclamos.stream().map(reclamoMapper)
-				.collect(Collectors.toList());
+		// Convertir cadena "null" a null para el enum TipoReclamo
+		TipoReclamo tipoReclamoValue = parseTipoReclamo(type);
+
+		// Convertir cadena "null" a null para el enum EstadoReclamo
+		EstadoReclamo estadoReclamoValue = parseEstadoReclamo(state);
+
+		List<Reclamo> reclamos = reclamoService.filter2(userIdValue, buildingIdValue, estadoReclamoValue,
+				tipoReclamoValue);
+		List<ReclamoDTO> allreclamos = reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
 
 		if (reclamos == null || reclamos.isEmpty()) {
 			return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
 		} else {
-			///List<ReclamoDTO> reclamosDTO = reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
+			/// List<ReclamoDTO> reclamosDTO =
+			/// reclamos.stream().map(reclamoMapper).collect(Collectors.toList());
 			return ResponseEntity.ok(allreclamos);
 		}
 	}
@@ -123,36 +117,30 @@ public class ReclamoController {
 
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
 
-		System.out.println(reclamoMap);
-
 		Reclamo reclamo = new Reclamo();
-	
-		
-		
+
 		Optional<EntityUser> optionalUser = userService.findById((int) reclamoMap.get("userid"));
 		EntityUser user = optionalUser.get();
-		
+
 		Optional<Edificio> optionalEdificio = edificioService.findById((int) reclamoMap.get("edificioid"));
-		
+
 		Edificio edificio = optionalEdificio.get();
-		
+
 		reclamo.setId((Integer) reclamoMap.get("reclamo_id"));
-		reclamo.setUser(user);		
+		reclamo.setUser(user);
 		reclamo.setTitulo((String) reclamoMap.get("titulo"));
 		reclamo.setDescripcion((String) reclamoMap.get("descripcion"));
 		reclamo.setEstadoReclamo(EstadoReclamo.valueOf((String) reclamoMap.get("estadoReclamo")));
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
 		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
-		
-
 
 		try {
 			reclamoService.save(reclamo);
 			List<ReclamoDTO> allReclamos = reclamoService.findAll().stream().map(reclamoMapper)
 					.collect(Collectors.toList());
-			ReclamoDTO reclamoNuevo = allReclamos.get(allReclamos.size() -1 );
-			
+			ReclamoDTO reclamoNuevo = allReclamos.get(allReclamos.size() - 1);
+
 			return ResponseEntity.ok(reclamoNuevo);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -162,16 +150,14 @@ public class ReclamoController {
 
 	@PatchMapping("/patch/{id}")
 	public ResponseEntity<?> actualizarReclamo(@PathVariable Integer id, @RequestBody ReclamoDTO reclamoDTO) {
-		
-	
 
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
-		
+
 		Optional<EntityUser> optionalUser = userService.findById((int) reclamoMap.get("userid"));
 		EntityUser user = optionalUser.get();
-		
+
 		Optional<Edificio> optionalEdificio = edificioService.findById((int) reclamoMap.get("edificioid"));
-		
+
 		Edificio edificio = optionalEdificio.get();
 
 		Reclamo reclamo = new Reclamo();
@@ -183,7 +169,7 @@ public class ReclamoController {
 		reclamo.setTipoReclamo(TipoReclamo.valueOf(reclamoMap.get("tipoReclamo").toString()));
 		reclamo.setEdificio(edificio);
 		reclamo.setActualizacion((String) reclamoMap.get("actualizacion"));
-	
+
 		try {
 			reclamoService.update(id, reclamo);
 			return ResponseEntity.ok("Reclamo actualizado exitosamente");
@@ -219,18 +205,19 @@ public class ReclamoController {
 	public ResponseEntity<String> exceptionHandler() {
 		return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error interno del servidor");
 	}
-	
-	// Métodos de utilidad para convertir cadena "null" a null y luego a Integer, TipoReclamo, EstadoReclamo
+
+	// Funciones para convertir cadena "null" a null y luego a Integer,
+	// TipoReclamo, EstadoReclamo
 	private Integer parseInteger(String value) {
-	  return (value != null && !value.equals("null")) ? Integer.parseInt(value) : null;
+		return (value != null && !value.equals("null")) ? Integer.parseInt(value) : null;
 	}
 
 	private TipoReclamo parseTipoReclamo(String value) {
-	  return (value != null && !value.equals("null")) ? TipoReclamo.valueOf(value) : null;
+		return (value != null && !value.equals("null")) ? TipoReclamo.valueOf(value) : null;
 	}
 
 	private EstadoReclamo parseEstadoReclamo(String value) {
-	  return (value != null && !value.equals("null")) ? EstadoReclamo.valueOf(value) : null;
+		return (value != null && !value.equals("null")) ? EstadoReclamo.valueOf(value) : null;
 	}
 
 }

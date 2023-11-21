@@ -3,9 +3,7 @@ package com.group1.dev.app.model.entity;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 import jakarta.persistence.CascadeType;
@@ -28,8 +26,7 @@ public class Reclamo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Integer id_reclamo;
 	private String titulo;
-	
-	
+
 	@ManyToOne
 	@JoinColumn(name = "user_id")
 	private EntityUser user;
@@ -43,7 +40,6 @@ public class Reclamo {
 	@OneToMany(mappedBy = "reclamo", cascade = CascadeType.ALL)
 	private List<Imagen> fotos = new ArrayList<Imagen>();
 
-	
 	@ManyToOne
 	@JoinColumn(name = "edificio_id")
 	private Edificio edificio;
