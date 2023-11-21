@@ -119,7 +119,7 @@ public class ReclamoController {
 	}
 
 	@PostMapping("/add")
-	public ResponseEntity<String> addReclamo(@RequestBody ReclamoDTO reclamoDTO) {
+	public ResponseEntity<?> addReclamo(@RequestBody ReclamoDTO reclamoDTO) {
 
 		Map<String, Object> reclamoMap = reclamoDTO.toMap();
 
@@ -149,7 +149,11 @@ public class ReclamoController {
 
 		try {
 			reclamoService.save(reclamo);
-			return ResponseEntity.ok().body("Reclamo creado exitosamente");
+			List<ReclamoDTO> allReclamos = reclamoService.findAll().stream().map(reclamoMapper)
+					.collect(Collectors.toList());
+			ReclamoDTO reclamoNuevo = allReclamos.get(allReclamos.size() -1 );
+			
+			return ResponseEntity.ok(reclamoNuevo);
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al crear el reclamo.");

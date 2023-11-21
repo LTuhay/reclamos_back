@@ -5,8 +5,12 @@ import java.util.function.Function;
 
 import javax.crypto.SecretKey;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+
+import com.group1.dev.app.model.entity.EntityUser;
+import com.group1.dev.app.services.UserService;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -19,10 +23,18 @@ public class JwtService {
 	private final int EXPIRATION_TIME_IN_MIN = 60;
 
 	private SecretKey secretKey = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+	
+	@Autowired
+	private UserService userService;
 
 	public String generateJWT(UserDetails userDetails) {
+		
+		EntityUser user = userService.findByUsername(userDetails.getUsername()).get();
+		String id = String.valueOf(user.getId());
+		System.out.println("Este es el id: "+id);
 		return Jwts.builder().setSubject(userDetails.getUsername())
 				.claim("role", userDetails.getAuthorities())
+				.claim("id",id)
 				.setIssuedAt(new Date())
 				.setExpiration(new Date(System.currentTimeMillis() + EXPIRATION_TIME_IN_MIN * 60 * 1000))
 				.signWith(secretKey, SignatureAlgorithm.HS256).compact();
